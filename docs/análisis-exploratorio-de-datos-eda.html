@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Análisis Exploratorio de Datos (EDA) | Forest Fires</title>
+  <meta name="description" content="Chapter 2 Análisis Exploratorio de Datos (EDA) | Forest Fires" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Análisis Exploratorio de Datos (EDA) | Forest Fires" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Análisis Exploratorio de Datos (EDA) | Forest Fires" />
+  
+  
+  
+
+<meta name="author" content="Abrahan Basto, Valamy Donado, Abraham Navarro" />
+
+
+<meta name="date" content="2025-10-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introducción.html"/>
+<link rel="next" href="inferencial.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="02-literature.html"><a href="#introducci%C3%B3n"><i class="fa fa-check"></i><b>1</b> Introducción</a></li>
+<li class="chapter" data-level="2" data-path="02-literature.html"><a href="#an%C3%A1lisis-exploratorio-de-datos-eda"><i class="fa fa-check"></i><b>2</b> Análisis Exploratorio de Datos (EDA)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="análisis-exploratorio-de-datos-eda.html"><a href="análisis-exploratorio-de-datos-eda.html"><i class="fa fa-check"></i><b>2.1</b> Datos</a></li>
+<li class="chapter" data-level="2.2" data-path="02-literature.html"><a href="#an%C3%A1lisis-de-la-variable-target-%C3%A1rea"><i class="fa fa-check"></i><b>2.2</b> Análisis de la variable target (área)</a></li>
+<li class="chapter" data-level="2.3" data-path="02-literature.html"><a href="#variables-independientes-num%C3%A9ricas"><i class="fa fa-check"></i><b>2.3</b> Variables independientes numéricas</a></li>
+<li class="chapter" data-level="2.4" data-path="02-literature.html"><a href="#variables-independientes-categ%C3%B3ricas"><i class="fa fa-check"></i><b>2.4</b> Variables independientes categóricas</a></li>
+<li class="chapter" data-level="2.5" data-path="02-literature.html"><a href="#an%C3%A1lisis-bivariado-num-vs-num"><i class="fa fa-check"></i><b>2.5</b> Análisis bivariado num vs num</a></li>
+<li class="chapter" data-level="2.6" data-path="02-literature.html"><a href="#an%C3%A1lisis-bivariado-num-vs-cat"><i class="fa fa-check"></i><b>2.6</b> Análisis bivariado num vs cat</a></li>
+<li class="chapter" data-level="2.7" data-path="análisis-exploratorio-de-datos-eda.html"><a href="análisis-exploratorio-de-datos-eda.html#conclusiones-eda"><i class="fa fa-check"></i><b>2.7</b> Conclusiones EDA</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="inferencial.html"><a href="inferencial.html"><i class="fa fa-check"></i><b>3</b> Inferencial</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="02-literature.html"><a href="#correlaci%C3%B3n-y-kruskal-wallis"><i class="fa fa-check"></i><b>3.1</b> Correlación y Kruskal-Wallis</a></li>
+<li class="chapter" data-level="3.2" data-path="02-literature.html"><a href="#conclusi%C3%B3n-inferencial"><i class="fa fa-check"></i><b>3.2</b> Conclusión inferencial</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Forest Fires</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="análisis-exploratorio-de-datos-eda" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Análisis Exploratorio de Datos (EDA)<a href="#an%C3%A1lisis-exploratorio-de-datos-eda" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="datos" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Datos<a href="análisis-exploratorio-de-datos-eda.html#datos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="análisis-exploratorio-de-datos-eda.html#cb1-1" tabindex="-1"></a>datos<span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;C:/Users/ASUS/Downloads/forestfires_1_.xlsx&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="análisis-exploratorio-de-datos-eda.html#cb2-1" tabindex="-1"></a><span class="fu">dim</span>(datos)</span></code></pre></div>
+<pre><code>## [1] 517  13</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="análisis-exploratorio-de-datos-eda.html#cb4-1" tabindex="-1"></a><span class="fu">colnames</span>(datos)</span></code></pre></div>
+<pre><code>##  [1] &quot;X&quot;     &quot;Y&quot;     &quot;month&quot; &quot;day&quot;   &quot;FFMC&quot;  &quot;DMC&quot;   &quot;DC&quot;    &quot;ISI&quot;   &quot;temp&quot; 
+## [10] &quot;RH&quot;    &quot;wind&quot;  &quot;rain&quot;  &quot;area&quot;</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="análisis-exploratorio-de-datos-eda.html#cb6-1" tabindex="-1"></a><span class="fu">str</span>(datos)</span></code></pre></div>
+<pre><code>## tibble [517 × 13] (S3: tbl_df/tbl/data.frame)
+##  $ X    : num [1:517] 7 7 7 8 8 8 8 8 8 7 ...
+##  $ Y    : num [1:517] 5 4 4 6 6 6 6 6 6 5 ...
+##  $ month: chr [1:517] &quot;mar&quot; &quot;oct&quot; &quot;oct&quot; &quot;mar&quot; ...
+##  $ day  : chr [1:517] &quot;fri&quot; &quot;tue&quot; &quot;sat&quot; &quot;fri&quot; ...
+##  $ FFMC : num [1:517] 86.2 90.6 90.6 91.7 89.3 92.3 92.3 91.5 91 92.5 ...
+##  $ DMC  : num [1:517] 26.2 35.4 43.7 33.3 51.3 ...
+##  $ DC   : num [1:517] 94.3 669.1 686.9 77.5 102.2 ...
+##  $ ISI  : num [1:517] 5.1 6.7 6.7 9 9.6 14.7 8.5 10.7 7 7.1 ...
+##  $ temp : num [1:517] 8.2 18 14.6 8.3 11.4 22.2 24.1 8 13.1 22.8 ...
+##  $ RH   : num [1:517] 51 33 33 97 99 29 27 86 63 40 ...
+##  $ wind : num [1:517] 6.7 0.9 1.3 4 1.8 5.4 3.1 2.2 5.4 4 ...
+##  $ rain : num [1:517] 0 0 0 0.2 0 0 0 0 0 0 ...
+##  $ area : num [1:517] 0 0 0 0 0 0 0 0 0 0 ...</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="análisis-exploratorio-de-datos-eda.html#cb8-1" tabindex="-1"></a><span class="co"># Valores nulos</span></span>
+<span id="cb8-2"><a href="análisis-exploratorio-de-datos-eda.html#cb8-2" tabindex="-1"></a>datos <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="análisis-exploratorio-de-datos-eda.html#cb8-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), </span>
+<span id="cb8-4"><a href="análisis-exploratorio-de-datos-eda.html#cb8-4" tabindex="-1"></a>                   <span class="sc">~</span><span class="fu">sum</span>(<span class="fu">is.na</span>(.))))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 13
+##       X     Y month   day  FFMC   DMC    DC   ISI  temp    RH  wind  rain  area
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+## 1     0     0     0     0     0     0     0     0     0     0     0     0     0</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="análisis-exploratorio-de-datos-eda.html#cb10-1" tabindex="-1"></a><span class="fu">missmap</span>(datos)</span></code></pre></div>
+<pre><code>## Warning: Unknown or uninitialised column: `arguments`.
+## Unknown or uninitialised column: `arguments`.</code></pre>
+<pre><code>## Warning: Unknown or uninitialised column: `imputations`.</code></pre>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>No hay datos faltantes</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="análisis-exploratorio-de-datos-eda.html#cb13-1" tabindex="-1"></a><span class="co"># Crear data frame</span></span>
+<span id="cb13-2"><a href="análisis-exploratorio-de-datos-eda.html#cb13-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(datos)</span></code></pre></div>
+</div>
+<div id="análisis-de-la-variable-target-área" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Análisis de la variable target (área)<a href="#an%C3%A1lisis-de-la-variable-target-%C3%A1rea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>La variable target, <code>area</code>, fue analizada a partir de 517 observaciones.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="análisis-exploratorio-de-datos-eda.html#cb14-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="análisis-exploratorio-de-datos-eda.html#cb14-2" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">length</span>(area), </span>
+<span id="cb14-3"><a href="análisis-exploratorio-de-datos-eda.html#cb14-3" tabindex="-1"></a>            <span class="at">prom =</span> <span class="fu">mean</span>(area),</span>
+<span id="cb14-4"><a href="análisis-exploratorio-de-datos-eda.html#cb14-4" tabindex="-1"></a>            <span class="at">ds =</span> <span class="fu">sd</span>(area),</span>
+<span id="cb14-5"><a href="análisis-exploratorio-de-datos-eda.html#cb14-5" tabindex="-1"></a>            <span class="at">mediana =</span> <span class="fu">median</span>(area),</span>
+<span id="cb14-6"><a href="análisis-exploratorio-de-datos-eda.html#cb14-6" tabindex="-1"></a>            <span class="at">RIC =</span> <span class="fu">IQR</span>(area),</span>
+<span id="cb14-7"><a href="análisis-exploratorio-de-datos-eda.html#cb14-7" tabindex="-1"></a>            <span class="at">minimo =</span> <span class="fu">min</span>(area),</span>
+<span id="cb14-8"><a href="análisis-exploratorio-de-datos-eda.html#cb14-8" tabindex="-1"></a>            <span class="at">maximo =</span> <span class="fu">max</span>(area),</span>
+<span id="cb14-9"><a href="análisis-exploratorio-de-datos-eda.html#cb14-9" tabindex="-1"></a>            <span class="at">Q1 =</span> <span class="fu">quantile</span>(area, <span class="fl">0.25</span>),</span>
+<span id="cb14-10"><a href="análisis-exploratorio-de-datos-eda.html#cb14-10" tabindex="-1"></a>            <span class="at">Q3 =</span> <span class="fu">quantile</span>(area, <span class="fl">0.75</span>))</span></code></pre></div>
+<pre><code>##     n     prom       ds mediana  RIC minimo  maximo Q1   Q3
+## 1 517 12.84729 63.65582    0.52 6.57      0 1090.84  0 6.57</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="análisis-exploratorio-de-datos-eda.html#cb16-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="análisis-exploratorio-de-datos-eda.html#cb16-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>area)) <span class="sc">+</span> </span>
+<span id="cb16-3"><a href="análisis-exploratorio-de-datos-eda.html#cb16-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">after_stat</span>(density))) <span class="sc">+</span> </span>
+<span id="cb16-4"><a href="análisis-exploratorio-de-datos-eda.html#cb16-4" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color=</span><span class="st">&quot;blue&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb16-5"><a href="análisis-exploratorio-de-datos-eda.html#cb16-5" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+La variable area fue analizada a partir de 517 observaciones. Se obtuvo un promedio de área quemada de aproximadamente 12.85 hectáreas (DS = 63.66 hectáreas), donde el 50% de los incendios presentaron un área quemada inferior a 0.52 hectáreas. El mínimo registrado fue de 0.00 hectáreas, lo que podría indicar que en algunos casos no hubo quema, o se trata de datos nulos o errores en la medición. El máximo alcanzó las 1,090.84 hectáreas, lo que refleja una gran heterogeneidad en la magnitud de los incendios, con algunos casos extremos de áreas quemadas significativamente mayores a la media. Este comportamiento podría indicar que aunque la mayoría de los incendios tienen un área pequeña, existen eventos excepcionales que influyen considerablemente en la distribución de los datos</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="análisis-exploratorio-de-datos-eda.html#cb18-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="análisis-exploratorio-de-datos-eda.html#cb18-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="análisis-exploratorio-de-datos-eda.html#cb18-3" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#a6cee3&quot;</span>, <span class="at">color =</span> <span class="st">&quot;#1f78b4&quot;</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-4"><a href="análisis-exploratorio-de-datos-eda.html#cb18-4" tabindex="-1"></a>  <span class="fu">stat_summary</span>(</span>
+<span id="cb18-5"><a href="análisis-exploratorio-de-datos-eda.html#cb18-5" tabindex="-1"></a>    <span class="at">fun =</span> mean,</span>
+<span id="cb18-6"><a href="análisis-exploratorio-de-datos-eda.html#cb18-6" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>,</span>
+<span id="cb18-7"><a href="análisis-exploratorio-de-datos-eda.html#cb18-7" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">20</span>,</span>
+<span id="cb18-8"><a href="análisis-exploratorio-de-datos-eda.html#cb18-8" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb18-9"><a href="análisis-exploratorio-de-datos-eda.html#cb18-9" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb18-10"><a href="análisis-exploratorio-de-datos-eda.html#cb18-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-11"><a href="análisis-exploratorio-de-datos-eda.html#cb18-11" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-12"><a href="análisis-exploratorio-de-datos-eda.html#cb18-12" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Diagrama de cajas y bigotes de área quemada&quot;</span>,</span>
+<span id="cb18-13"><a href="análisis-exploratorio-de-datos-eda.html#cb18-13" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb18-14"><a href="análisis-exploratorio-de-datos-eda.html#cb18-14" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb18-15"><a href="análisis-exploratorio-de-datos-eda.html#cb18-15" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-16"><a href="análisis-exploratorio-de-datos-eda.html#cb18-16" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>El diagrama de cajas y bigotes de la variable area revela que la mayoría de los incendios tienen áreas quemadas pequeñas, ya que la caja se concentra cerca de 0 hectáreas. La mediana se encuentra cerca de 0.57 hectáreas, lo que sugiere que la mitad de los incendios tienen áreas menores o iguales a este valor. Sin embargo, se observan varios valores atípicos representados por puntos rojos, que corresponden a incendios de gran magnitud, con áreas quemadas que alcanzan hasta 900 hectáreas o más. Esto indica una gran variabilidad en el tamaño de los incendios, con la mayoría de los casos siendo pequeños pero algunos eventos extremos que influyen en la distribución de los datos.</p>
+</div>
+<div id="variables-independientes-numéricas" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Variables independientes numéricas<a href="#variables-independientes-num%C3%A9ricas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="análisis-exploratorio-de-datos-eda.html#cb19-1" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y, <span class="at">size =</span> area)) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="análisis-exploratorio-de-datos-eda.html#cb19-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;orange&quot;</span>) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="análisis-exploratorio-de-datos-eda.html#cb19-3" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="análisis-exploratorio-de-datos-eda.html#cb19-4" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="análisis-exploratorio-de-datos-eda.html#cb19-5" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb19-6"><a href="análisis-exploratorio-de-datos-eda.html#cb19-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Ubicación y magnitud de incendios&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>El gráfico de la frecuencia de incendios por coordenada muestra que los incendios están distribuidos en todo el bosque, aunque la mayoría afectan áreas pequeñas, lo que coincide con el fuerte sesgo observado en los datos. Se identifican algunos puntos con incendios de gran magnitud, concentrados principalmente entre las coordenadas X = 6–8 y Y = 4–6, lo que puede indicar zonas más propensas a daños. Sin embargo, no se evidencia una relación clara entre la ubicación (X, Y) y el tamaño del incendio, sino posibles regiones críticas donde los incendios tienden a ser más intensos o frecuentes.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="análisis-exploratorio-de-datos-eda.html#cb20-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="análisis-exploratorio-de-datos-eda.html#cb20-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb20-3"><a href="análisis-exploratorio-de-datos-eda.html#cb20-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(FFMC),</span>
+<span id="cb20-4"><a href="análisis-exploratorio-de-datos-eda.html#cb20-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(FFMC),</span>
+<span id="cb20-5"><a href="análisis-exploratorio-de-datos-eda.html#cb20-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(FFMC),</span>
+<span id="cb20-6"><a href="análisis-exploratorio-de-datos-eda.html#cb20-6" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(FFMC),</span>
+<span id="cb20-7"><a href="análisis-exploratorio-de-datos-eda.html#cb20-7" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(FFMC),</span>
+<span id="cb20-8"><a href="análisis-exploratorio-de-datos-eda.html#cb20-8" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(FFMC),</span>
+<span id="cb20-9"><a href="análisis-exploratorio-de-datos-eda.html#cb20-9" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(FFMC, <span class="fl">0.25</span>),</span>
+<span id="cb20-10"><a href="análisis-exploratorio-de-datos-eda.html#cb20-10" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(FFMC, <span class="fl">0.75</span>),</span>
+<span id="cb20-11"><a href="análisis-exploratorio-de-datos-eda.html#cb20-11" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(FFMC)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-12"><a href="análisis-exploratorio-de-datos-eda.html#cb20-12" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;FFMC&quot;</span>) <span class="ot">-&gt;</span> ffmc</span>
+<span id="cb20-13"><a href="análisis-exploratorio-de-datos-eda.html#cb20-13" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="análisis-exploratorio-de-datos-eda.html#cb20-14" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb20-15"><a href="análisis-exploratorio-de-datos-eda.html#cb20-15" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb20-16"><a href="análisis-exploratorio-de-datos-eda.html#cb20-16" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(DMC),</span>
+<span id="cb20-17"><a href="análisis-exploratorio-de-datos-eda.html#cb20-17" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(DMC),</span>
+<span id="cb20-18"><a href="análisis-exploratorio-de-datos-eda.html#cb20-18" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(DMC),</span>
+<span id="cb20-19"><a href="análisis-exploratorio-de-datos-eda.html#cb20-19" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(DMC),</span>
+<span id="cb20-20"><a href="análisis-exploratorio-de-datos-eda.html#cb20-20" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(DMC),</span>
+<span id="cb20-21"><a href="análisis-exploratorio-de-datos-eda.html#cb20-21" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(DMC),</span>
+<span id="cb20-22"><a href="análisis-exploratorio-de-datos-eda.html#cb20-22" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(DMC, <span class="fl">0.25</span>),</span>
+<span id="cb20-23"><a href="análisis-exploratorio-de-datos-eda.html#cb20-23" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(DMC, <span class="fl">0.75</span>),</span>
+<span id="cb20-24"><a href="análisis-exploratorio-de-datos-eda.html#cb20-24" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(DMC)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-25"><a href="análisis-exploratorio-de-datos-eda.html#cb20-25" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;DMC&quot;</span>) <span class="ot">-&gt;</span> dmc</span>
+<span id="cb20-26"><a href="análisis-exploratorio-de-datos-eda.html#cb20-26" tabindex="-1"></a></span>
+<span id="cb20-27"><a href="análisis-exploratorio-de-datos-eda.html#cb20-27" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb20-28"><a href="análisis-exploratorio-de-datos-eda.html#cb20-28" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb20-29"><a href="análisis-exploratorio-de-datos-eda.html#cb20-29" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(DC),</span>
+<span id="cb20-30"><a href="análisis-exploratorio-de-datos-eda.html#cb20-30" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(DC),</span>
+<span id="cb20-31"><a href="análisis-exploratorio-de-datos-eda.html#cb20-31" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(DC),</span>
+<span id="cb20-32"><a href="análisis-exploratorio-de-datos-eda.html#cb20-32" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(DC),</span>
+<span id="cb20-33"><a href="análisis-exploratorio-de-datos-eda.html#cb20-33" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(DC),</span>
+<span id="cb20-34"><a href="análisis-exploratorio-de-datos-eda.html#cb20-34" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(DC),</span>
+<span id="cb20-35"><a href="análisis-exploratorio-de-datos-eda.html#cb20-35" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(DC, <span class="fl">0.25</span>),</span>
+<span id="cb20-36"><a href="análisis-exploratorio-de-datos-eda.html#cb20-36" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(DC, <span class="fl">0.75</span>),</span>
+<span id="cb20-37"><a href="análisis-exploratorio-de-datos-eda.html#cb20-37" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(DC)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-38"><a href="análisis-exploratorio-de-datos-eda.html#cb20-38" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;DC&quot;</span>)<span class="ot">-&gt;</span> dc</span>
+<span id="cb20-39"><a href="análisis-exploratorio-de-datos-eda.html#cb20-39" tabindex="-1"></a></span>
+<span id="cb20-40"><a href="análisis-exploratorio-de-datos-eda.html#cb20-40" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb20-41"><a href="análisis-exploratorio-de-datos-eda.html#cb20-41" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb20-42"><a href="análisis-exploratorio-de-datos-eda.html#cb20-42" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(ISI),</span>
+<span id="cb20-43"><a href="análisis-exploratorio-de-datos-eda.html#cb20-43" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(ISI),</span>
+<span id="cb20-44"><a href="análisis-exploratorio-de-datos-eda.html#cb20-44" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(ISI),</span>
+<span id="cb20-45"><a href="análisis-exploratorio-de-datos-eda.html#cb20-45" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(ISI),</span>
+<span id="cb20-46"><a href="análisis-exploratorio-de-datos-eda.html#cb20-46" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(ISI),</span>
+<span id="cb20-47"><a href="análisis-exploratorio-de-datos-eda.html#cb20-47" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(ISI),</span>
+<span id="cb20-48"><a href="análisis-exploratorio-de-datos-eda.html#cb20-48" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(ISI, <span class="fl">0.25</span>),</span>
+<span id="cb20-49"><a href="análisis-exploratorio-de-datos-eda.html#cb20-49" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(ISI, <span class="fl">0.75</span>),</span>
+<span id="cb20-50"><a href="análisis-exploratorio-de-datos-eda.html#cb20-50" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(ISI)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-51"><a href="análisis-exploratorio-de-datos-eda.html#cb20-51" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;ISI&quot;</span>)<span class="ot">-&gt;</span> isi</span>
+<span id="cb20-52"><a href="análisis-exploratorio-de-datos-eda.html#cb20-52" tabindex="-1"></a></span>
+<span id="cb20-53"><a href="análisis-exploratorio-de-datos-eda.html#cb20-53" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb20-54"><a href="análisis-exploratorio-de-datos-eda.html#cb20-54" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb20-55"><a href="análisis-exploratorio-de-datos-eda.html#cb20-55" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(temp),</span>
+<span id="cb20-56"><a href="análisis-exploratorio-de-datos-eda.html#cb20-56" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(temp),</span>
+<span id="cb20-57"><a href="análisis-exploratorio-de-datos-eda.html#cb20-57" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(temp),</span>
+<span id="cb20-58"><a href="análisis-exploratorio-de-datos-eda.html#cb20-58" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(temp),</span>
+<span id="cb20-59"><a href="análisis-exploratorio-de-datos-eda.html#cb20-59" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(temp),</span>
+<span id="cb20-60"><a href="análisis-exploratorio-de-datos-eda.html#cb20-60" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(temp),</span>
+<span id="cb20-61"><a href="análisis-exploratorio-de-datos-eda.html#cb20-61" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(temp, <span class="fl">0.25</span>),</span>
+<span id="cb20-62"><a href="análisis-exploratorio-de-datos-eda.html#cb20-62" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(temp, <span class="fl">0.75</span>),</span>
+<span id="cb20-63"><a href="análisis-exploratorio-de-datos-eda.html#cb20-63" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(temp)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-64"><a href="análisis-exploratorio-de-datos-eda.html#cb20-64" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;temp&quot;</span>)<span class="ot">-&gt;</span> temp</span>
+<span id="cb20-65"><a href="análisis-exploratorio-de-datos-eda.html#cb20-65" tabindex="-1"></a></span>
+<span id="cb20-66"><a href="análisis-exploratorio-de-datos-eda.html#cb20-66" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb20-67"><a href="análisis-exploratorio-de-datos-eda.html#cb20-67" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb20-68"><a href="análisis-exploratorio-de-datos-eda.html#cb20-68" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(RH),</span>
+<span id="cb20-69"><a href="análisis-exploratorio-de-datos-eda.html#cb20-69" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(RH),</span>
+<span id="cb20-70"><a href="análisis-exploratorio-de-datos-eda.html#cb20-70" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(RH),</span>
+<span id="cb20-71"><a href="análisis-exploratorio-de-datos-eda.html#cb20-71" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(RH),</span>
+<span id="cb20-72"><a href="análisis-exploratorio-de-datos-eda.html#cb20-72" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(RH),</span>
+<span id="cb20-73"><a href="análisis-exploratorio-de-datos-eda.html#cb20-73" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(RH),</span>
+<span id="cb20-74"><a href="análisis-exploratorio-de-datos-eda.html#cb20-74" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(RH, <span class="fl">0.25</span>),</span>
+<span id="cb20-75"><a href="análisis-exploratorio-de-datos-eda.html#cb20-75" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(RH, <span class="fl">0.75</span>),</span>
+<span id="cb20-76"><a href="análisis-exploratorio-de-datos-eda.html#cb20-76" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(RH)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-77"><a href="análisis-exploratorio-de-datos-eda.html#cb20-77" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;RH&quot;</span>)<span class="ot">-&gt;</span> rh</span>
+<span id="cb20-78"><a href="análisis-exploratorio-de-datos-eda.html#cb20-78" tabindex="-1"></a></span>
+<span id="cb20-79"><a href="análisis-exploratorio-de-datos-eda.html#cb20-79" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb20-80"><a href="análisis-exploratorio-de-datos-eda.html#cb20-80" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb20-81"><a href="análisis-exploratorio-de-datos-eda.html#cb20-81" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(wind),</span>
+<span id="cb20-82"><a href="análisis-exploratorio-de-datos-eda.html#cb20-82" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(wind),</span>
+<span id="cb20-83"><a href="análisis-exploratorio-de-datos-eda.html#cb20-83" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(wind),</span>
+<span id="cb20-84"><a href="análisis-exploratorio-de-datos-eda.html#cb20-84" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(wind),</span>
+<span id="cb20-85"><a href="análisis-exploratorio-de-datos-eda.html#cb20-85" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(wind),</span>
+<span id="cb20-86"><a href="análisis-exploratorio-de-datos-eda.html#cb20-86" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(wind),</span>
+<span id="cb20-87"><a href="análisis-exploratorio-de-datos-eda.html#cb20-87" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(wind, <span class="fl">0.25</span>),</span>
+<span id="cb20-88"><a href="análisis-exploratorio-de-datos-eda.html#cb20-88" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(wind, <span class="fl">0.75</span>),</span>
+<span id="cb20-89"><a href="análisis-exploratorio-de-datos-eda.html#cb20-89" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(wind)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-90"><a href="análisis-exploratorio-de-datos-eda.html#cb20-90" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;wind&quot;</span>)<span class="ot">-&gt;</span> wind</span>
+<span id="cb20-91"><a href="análisis-exploratorio-de-datos-eda.html#cb20-91" tabindex="-1"></a></span>
+<span id="cb20-92"><a href="análisis-exploratorio-de-datos-eda.html#cb20-92" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb20-93"><a href="análisis-exploratorio-de-datos-eda.html#cb20-93" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb20-94"><a href="análisis-exploratorio-de-datos-eda.html#cb20-94" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(rain),</span>
+<span id="cb20-95"><a href="análisis-exploratorio-de-datos-eda.html#cb20-95" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(rain),</span>
+<span id="cb20-96"><a href="análisis-exploratorio-de-datos-eda.html#cb20-96" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(rain),</span>
+<span id="cb20-97"><a href="análisis-exploratorio-de-datos-eda.html#cb20-97" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(rain),</span>
+<span id="cb20-98"><a href="análisis-exploratorio-de-datos-eda.html#cb20-98" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(rain),</span>
+<span id="cb20-99"><a href="análisis-exploratorio-de-datos-eda.html#cb20-99" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(rain),</span>
+<span id="cb20-100"><a href="análisis-exploratorio-de-datos-eda.html#cb20-100" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(rain, <span class="fl">0.25</span>),</span>
+<span id="cb20-101"><a href="análisis-exploratorio-de-datos-eda.html#cb20-101" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(rain, <span class="fl">0.75</span>),</span>
+<span id="cb20-102"><a href="análisis-exploratorio-de-datos-eda.html#cb20-102" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(rain)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-103"><a href="análisis-exploratorio-de-datos-eda.html#cb20-103" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;rain&quot;</span>)<span class="ot">-&gt;</span> rain</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="análisis-exploratorio-de-datos-eda.html#cb21-1" tabindex="-1"></a><span class="fu">bind_rows</span>(ffmc, dmc, dc, isi, temp, rh, wind, rain) <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="análisis-exploratorio-de-datos-eda.html#cb21-2" tabindex="-1"></a>  <span class="fu">select</span>(variable, <span class="fu">everything</span>())</span></code></pre></div>
+<pre><code>##   variable   n        media          ds mediana minimo maximo    Q1    Q3   IQR
+## 1     FFMC 517  90.64468085   5.5201108    91.6   18.7   96.2  90.2  92.9   2.7
+## 2      DMC 517 110.87234043  64.0464822   108.3    1.1  291.3  68.6 142.4  73.8
+## 3       DC 517 547.94003868 248.0661917   664.2    7.9  860.6 437.7 713.9 276.2
+## 4      ISI 517   9.02166344   4.5594772     8.4    0.0   56.1   6.5  10.8   4.3
+## 5     temp 517  18.88916828   5.8066253    19.3    2.2   33.3  15.5  22.8   7.3
+## 6       RH 517  44.28820116  16.3174692    42.0   15.0  100.0  33.0  53.0  20.0
+## 7     wind 517   4.01760155   1.7916526     4.0    0.4    9.4   2.7   4.9   2.2
+## 8     rain 517   0.02166344   0.2959591     0.0    0.0    6.4   0.0   0.0   0.0</code></pre>
+<p>FFMC: La media de FFMC es 90.64 (DS = 5.52), con una mediana de 91.6 y un rango entre 18.7 y 96.2. La mayoría de los valores se concentran en el rango medio, pero se observan algunas variaciones extremas, lo que sugiere que el índice de riesgo de fuego en la mayoría de los casos es moderado, con algunos eventos de mayor intensidad.</p>
+<p>DMC: La media de DMC es 110.87 (DS = 64.04), con una mediana de 108.3 y un rango entre 1.1 y 291.3. El índice presenta una gran dispersión, lo que indica que los incendios pueden estar asociados con una amplia variedad de condiciones meteorológicas y de vegetación.</p>
+<p>DC: Con una media de 547.94 (DS = 488.07), DC tiene una mediana de 664.2 y un rango que varía entre 7.9 y 860.6. Este índice también muestra una amplia dispersión, sugiriendo que los incendios pueden estar relacionados con condiciones muy variables de humedad y combustibilidad de la vegetación.</p>
+<p>ISI: La media de ISI es 9.02 (DS = 4.56), con una mediana de 8.4 y un rango entre 0.0 y 56.1. Este índice de severidad de incendios muestra una mayor concentración en los valores bajos, con algunas observaciones extremas que podrían reflejar condiciones extremadamente severas de riesgo de incendio.</p>
+<p>temp: La media de temperatura es 18.89°C (DS = 5.81), con una mediana de 19.3°C y un rango entre 2.3°C y 33.5°C. La temperatura muestra una distribución relativamente uniforme, pero con algunos valores extremos, lo que puede influir en la propagación de los incendios.</p>
+<p>RH: La media de humedad relativa es 42.0% (DS = 16.32), con una mediana de 42.0% y un rango de 15.0% a 100%. Los valores extremos en la humedad relativa pueden indicar que ciertos incendios ocurren en condiciones de muy baja humedad o, en algunos casos, de alta humedad, lo que puede afectar la velocidad de propagación del fuego.</p>
+<p>wind: La media de la velocidad del viento es 4.01 km/h (DS = 1.79), con una mediana de 4.0 km/h y un rango de 0.4 a 9.4 km/h. La mayoría de las observaciones son valores moderados de viento, aunque los valores extremos más altos podrían representar condiciones favorables para la propagación rápida de los incendios.</p>
+<p>rain: La media de lluvia es muy baja, 0.02 mm/m² (DS = 0.30), con una mediana de 0.0 mm/m² y un rango entre 0.0 y 6.4 mm/m². La lluvia tiene una concentración en valores muy bajos, lo que indica que la lluvia tiene poca influencia en la extinción de incendios, siendo la variable menos relevante en la mitigación de incendios.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="análisis-exploratorio-de-datos-eda.html#cb23-1" tabindex="-1"></a>box_plot_var <span class="ot">&lt;-</span> <span class="cf">function</span>(data, var, titulo, ylab) {</span>
+<span id="cb23-2"><a href="análisis-exploratorio-de-datos-eda.html#cb23-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="sc">!!</span><span class="fu">sym</span>(var))) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="análisis-exploratorio-de-datos-eda.html#cb23-3" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#a6cee3&quot;</span>, <span class="at">color =</span> <span class="st">&quot;#1f78b4&quot;</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="análisis-exploratorio-de-datos-eda.html#cb23-4" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">20</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb23-5"><a href="análisis-exploratorio-de-datos-eda.html#cb23-5" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> titulo, <span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> ylab) <span class="sc">+</span></span>
+<span id="cb23-6"><a href="análisis-exploratorio-de-datos-eda.html#cb23-6" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span>
+<span id="cb23-7"><a href="análisis-exploratorio-de-datos-eda.html#cb23-7" tabindex="-1"></a>}</span>
+<span id="cb23-8"><a href="análisis-exploratorio-de-datos-eda.html#cb23-8" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="análisis-exploratorio-de-datos-eda.html#cb23-9" tabindex="-1"></a><span class="co"># Crear cada gráfico</span></span>
+<span id="cb23-10"><a href="análisis-exploratorio-de-datos-eda.html#cb23-10" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">box_plot_var</span>(df, <span class="st">&quot;FFMC&quot;</span>, <span class="st">&quot;FFMC&quot;</span>, <span class="st">&quot;Índice FFMC&quot;</span>)</span>
+<span id="cb23-11"><a href="análisis-exploratorio-de-datos-eda.html#cb23-11" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">box_plot_var</span>(df, <span class="st">&quot;DMC&quot;</span>,  <span class="st">&quot;DMC&quot;</span>,  <span class="st">&quot;Índice DMC&quot;</span>)</span>
+<span id="cb23-12"><a href="análisis-exploratorio-de-datos-eda.html#cb23-12" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">box_plot_var</span>(df, <span class="st">&quot;DC&quot;</span>,   <span class="st">&quot;DC&quot;</span>,   <span class="st">&quot;Índice DC&quot;</span>)</span>
+<span id="cb23-13"><a href="análisis-exploratorio-de-datos-eda.html#cb23-13" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">box_plot_var</span>(df, <span class="st">&quot;ISI&quot;</span>,  <span class="st">&quot;ISI&quot;</span>,  <span class="st">&quot;ISI&quot;</span>)</span>
+<span id="cb23-14"><a href="análisis-exploratorio-de-datos-eda.html#cb23-14" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> <span class="fu">box_plot_var</span>(df, <span class="st">&quot;temp&quot;</span>, <span class="st">&quot;temp&quot;</span>, <span class="st">&quot;Temperatura&quot;</span>)</span>
+<span id="cb23-15"><a href="análisis-exploratorio-de-datos-eda.html#cb23-15" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fu">box_plot_var</span>(df, <span class="st">&quot;RH&quot;</span>,   <span class="st">&quot;RH&quot;</span>,   <span class="st">&quot;RH&quot;</span>)</span>
+<span id="cb23-16"><a href="análisis-exploratorio-de-datos-eda.html#cb23-16" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> <span class="fu">box_plot_var</span>(df, <span class="st">&quot;wind&quot;</span>, <span class="st">&quot;wind&quot;</span>, <span class="st">&quot;Viento&quot;</span>)</span>
+<span id="cb23-17"><a href="análisis-exploratorio-de-datos-eda.html#cb23-17" tabindex="-1"></a>p8 <span class="ot">&lt;-</span> <span class="fu">box_plot_var</span>(df, <span class="st">&quot;rain&quot;</span>, <span class="st">&quot;rain&quot;</span>, <span class="st">&quot;Lluvia&quot;</span>)</span>
+<span id="cb23-18"><a href="análisis-exploratorio-de-datos-eda.html#cb23-18" tabindex="-1"></a>p9 <span class="ot">&lt;-</span> <span class="fu">box_plot_var</span>(df, <span class="st">&quot;X&quot;</span>, <span class="st">&quot;X&quot;</span>, <span class="st">&quot;Coord. X&quot;</span>)</span>
+<span id="cb23-19"><a href="análisis-exploratorio-de-datos-eda.html#cb23-19" tabindex="-1"></a>p10 <span class="ot">&lt;-</span> <span class="fu">box_plot_var</span>(df, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;Coord. Y&quot;</span>)</span>
+<span id="cb23-20"><a href="análisis-exploratorio-de-datos-eda.html#cb23-20" tabindex="-1"></a></span>
+<span id="cb23-21"><a href="análisis-exploratorio-de-datos-eda.html#cb23-21" tabindex="-1"></a><span class="co"># Juntar todo en una sola imagen </span></span>
+<span id="cb23-22"><a href="análisis-exploratorio-de-datos-eda.html#cb23-22" tabindex="-1"></a>(p1 <span class="sc">|</span> p2 <span class="sc">|</span> p3 <span class="sc">|</span> p4 <span class="sc">|</span> p9) <span class="sc">/</span></span>
+<span id="cb23-23"><a href="análisis-exploratorio-de-datos-eda.html#cb23-23" tabindex="-1"></a>(p5 <span class="sc">|</span> p6 <span class="sc">|</span> p7 <span class="sc">|</span> p8 <span class="sc">|</span> p10)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+Los gráficos de cajas y bigotes muestran que la mayoría de los incendios forestales en la región ocurren bajo condiciones moderadas, con índices de riesgo de incendio (FFMC, DMC, DC, ISI) concentrados en valores medios, pero con algunos valores atípicos que indican eventos extremos. La temperatura presenta una distribución relativamente uniforme, aunque con algunas temperaturas altas que pueden favorecer la propagación del fuego, mientras que la humedad relativa varía entre valores bajos y altos, lo que puede influir en la intensidad del incendio. El viento tiene una distribución centrada en valores bajos, pero algunos picos extremos sugieren que en ciertos casos el viento puede acelerar la propagación. Finalmente, la lluvia es muy poco frecuente y no parece tener un impacto significativo en la extinción de incendios. Estos patrones reflejan que, aunque las condiciones en la mayoría de los casos son moderadas, los eventos extremos pueden generar situaciones de alto riesgo para los incendios.</p>
+</div>
+<div id="variables-independientes-categóricas" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Variables independientes categóricas<a href="#variables-independientes-categ%C3%B3ricas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="análisis-exploratorio-de-datos-eda.html#cb24-1" tabindex="-1"></a>df<span class="sc">$</span>month <span class="ot">&lt;-</span> <span class="fu">factor</span>(df<span class="sc">$</span>month,</span>
+<span id="cb24-2"><a href="análisis-exploratorio-de-datos-eda.html#cb24-2" tabindex="-1"></a>                   <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;jan&quot;</span>, <span class="st">&quot;feb&quot;</span>, <span class="st">&quot;mar&quot;</span>, <span class="st">&quot;apr&quot;</span>, <span class="st">&quot;may&quot;</span>, <span class="st">&quot;jun&quot;</span>,</span>
+<span id="cb24-3"><a href="análisis-exploratorio-de-datos-eda.html#cb24-3" tabindex="-1"></a>                              <span class="st">&quot;jul&quot;</span>, <span class="st">&quot;aug&quot;</span>, <span class="st">&quot;sep&quot;</span>, <span class="st">&quot;oct&quot;</span>, <span class="st">&quot;nov&quot;</span>, <span class="st">&quot;dec&quot;</span>))</span>
+<span id="cb24-4"><a href="análisis-exploratorio-de-datos-eda.html#cb24-4" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="análisis-exploratorio-de-datos-eda.html#cb24-5" tabindex="-1"></a>tabla_month <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb24-6"><a href="análisis-exploratorio-de-datos-eda.html#cb24-6" tabindex="-1"></a>  <span class="fu">count</span>(month, <span class="at">name=</span><span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-7"><a href="análisis-exploratorio-de-datos-eda.html#cb24-7" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb24-8"><a href="análisis-exploratorio-de-datos-eda.html#cb24-8" tabindex="-1"></a>    <span class="at">Porcentaje =</span> <span class="fu">round</span>(</span>
+<span id="cb24-9"><a href="análisis-exploratorio-de-datos-eda.html#cb24-9" tabindex="-1"></a>      (Frecuencia<span class="sc">/</span><span class="fu">sum</span>(Frecuencia))<span class="sc">*</span><span class="dv">100</span>,<span class="dv">1</span>),</span>
+<span id="cb24-10"><a href="análisis-exploratorio-de-datos-eda.html#cb24-10" tabindex="-1"></a>    <span class="at">Etiqueta =</span> <span class="fu">paste0</span>(Frecuencia, <span class="st">&quot; (&quot;</span>,Porcentaje,<span class="st">&quot;%)&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="análisis-exploratorio-de-datos-eda.html#cb25-1" tabindex="-1"></a>g_mes <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(tabla_month, <span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">y =</span> Frecuencia)) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="análisis-exploratorio-de-datos-eda.html#cb25-2" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">&quot;#A0ABFF&quot;</span>, <span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="análisis-exploratorio-de-datos-eda.html#cb25-3" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> Etiqueta), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="análisis-exploratorio-de-datos-eda.html#cb25-4" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">&quot;Distribución de la variable month&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb25-5"><a href="análisis-exploratorio-de-datos-eda.html#cb25-5" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>))) <span class="sc">+</span></span>
+<span id="cb25-6"><a href="análisis-exploratorio-de-datos-eda.html#cb25-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Mes del año&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Frecuencia (Porcentaje)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb25-7"><a href="análisis-exploratorio-de-datos-eda.html#cb25-7" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb25-8"><a href="análisis-exploratorio-de-datos-eda.html#cb25-8" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb25-9"><a href="análisis-exploratorio-de-datos-eda.html#cb25-9" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-10"><a href="análisis-exploratorio-de-datos-eda.html#cb25-10" tabindex="-1"></a>    <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;gray80&quot;</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb25-11"><a href="análisis-exploratorio-de-datos-eda.html#cb25-11" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb25-12"><a href="análisis-exploratorio-de-datos-eda.html#cb25-12" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb25-13"><a href="análisis-exploratorio-de-datos-eda.html#cb25-13" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="análisis-exploratorio-de-datos-eda.html#cb26-1" tabindex="-1"></a>df<span class="sc">$</span>day <span class="ot">&lt;-</span> <span class="fu">factor</span>(df<span class="sc">$</span>day,</span>
+<span id="cb26-2"><a href="análisis-exploratorio-de-datos-eda.html#cb26-2" tabindex="-1"></a>                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;mon&quot;</span>, <span class="st">&quot;tue&quot;</span>, <span class="st">&quot;wed&quot;</span>, <span class="st">&quot;thu&quot;</span>, <span class="st">&quot;fri&quot;</span>, <span class="st">&quot;sat&quot;</span>, <span class="st">&quot;sun&quot;</span>))</span>
+<span id="cb26-3"><a href="análisis-exploratorio-de-datos-eda.html#cb26-3" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="análisis-exploratorio-de-datos-eda.html#cb26-4" tabindex="-1"></a>tabla_day <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb26-5"><a href="análisis-exploratorio-de-datos-eda.html#cb26-5" tabindex="-1"></a>  <span class="fu">count</span>(day, <span class="at">name=</span><span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-6"><a href="análisis-exploratorio-de-datos-eda.html#cb26-6" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-7"><a href="análisis-exploratorio-de-datos-eda.html#cb26-7" tabindex="-1"></a>    <span class="at">Porcentaje =</span> <span class="fu">round</span>(</span>
+<span id="cb26-8"><a href="análisis-exploratorio-de-datos-eda.html#cb26-8" tabindex="-1"></a>      (Frecuencia<span class="sc">/</span><span class="fu">sum</span>(Frecuencia))<span class="sc">*</span><span class="dv">100</span>,<span class="dv">1</span>),</span>
+<span id="cb26-9"><a href="análisis-exploratorio-de-datos-eda.html#cb26-9" tabindex="-1"></a>    <span class="at">Etiqueta =</span> <span class="fu">paste0</span>(Frecuencia, <span class="st">&quot; (&quot;</span>,Porcentaje,<span class="st">&quot;%)&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="análisis-exploratorio-de-datos-eda.html#cb27-1" tabindex="-1"></a>g_dia <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(tabla_day, <span class="fu">aes</span>(<span class="at">x =</span> day, <span class="at">y =</span> Frecuencia)) <span class="sc">+</span></span>
+<span id="cb27-2"><a href="análisis-exploratorio-de-datos-eda.html#cb27-2" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">&quot;#A0ABFF&quot;</span>, <span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb27-3"><a href="análisis-exploratorio-de-datos-eda.html#cb27-3" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> Etiqueta), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="análisis-exploratorio-de-datos-eda.html#cb27-4" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">&quot;Distribución de la variable day&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb27-5"><a href="análisis-exploratorio-de-datos-eda.html#cb27-5" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>))) <span class="sc">+</span></span>
+<span id="cb27-6"><a href="análisis-exploratorio-de-datos-eda.html#cb27-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Día de la semana&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Frecuencia (Porcentaje)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb27-7"><a href="análisis-exploratorio-de-datos-eda.html#cb27-7" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb27-8"><a href="análisis-exploratorio-de-datos-eda.html#cb27-8" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb27-9"><a href="análisis-exploratorio-de-datos-eda.html#cb27-9" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb27-10"><a href="análisis-exploratorio-de-datos-eda.html#cb27-10" tabindex="-1"></a>    <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;gray80&quot;</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb27-11"><a href="análisis-exploratorio-de-datos-eda.html#cb27-11" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb27-12"><a href="análisis-exploratorio-de-datos-eda.html#cb27-12" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb27-13"><a href="análisis-exploratorio-de-datos-eda.html#cb27-13" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="análisis-exploratorio-de-datos-eda.html#cb28-1" tabindex="-1"></a>g_mes <span class="sc">/</span> g_dia</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+Ambos gráficos dan información valiosa, pero el de la variable month es más relevante para el estudio, ya que muestra una clara estacionalidad en los incendios, con un aumento significativo en los meses agosto y septiembre, lo cual es crucial para predecir y gestionar los incendios en función de las condiciones climáticas estacionales. El gráfico de la variable day, aunque útil, refleja una distribución menos clara y podría ser más relevante si se exploran factores específicos como el comportamiento humano o actividades más comunes en ciertos días.</p>
+</div>
+<div id="análisis-bivariado-num-vs-num" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Análisis bivariado num vs num<a href="#an%C3%A1lisis-bivariado-num-vs-num" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="análisis-exploratorio-de-datos-eda.html#cb29-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb29-2"><a href="análisis-exploratorio-de-datos-eda.html#cb29-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> FFMC, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="análisis-exploratorio-de-datos-eda.html#cb29-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="análisis-exploratorio-de-datos-eda.html#cb29-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="análisis-exploratorio-de-datos-eda.html#cb29-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;FFMC&quot;</span>,</span>
+<span id="cb29-6"><a href="análisis-exploratorio-de-datos-eda.html#cb29-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb29-7"><a href="análisis-exploratorio-de-datos-eda.html#cb29-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb29-8"><a href="análisis-exploratorio-de-datos-eda.html#cb29-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb29-9"><a href="análisis-exploratorio-de-datos-eda.html#cb29-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre FFMC y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+El gráfico de dispersión muestra una relación positiva entre el FFMC (Índice de riesgo de incendio) y el área quemada. A medida que el valor de FFMC aumenta, también lo hace el área quemada, lo que indica que a mayores valores de FFMC, que representan un mayor riesgo de incendio, se asocia con un aumento en el tamaño del área quemada. Sin embargo, la relación no es perfecta, ya que existen muchos valores dispersos, especialmente en los valores más altos de FFMC, lo que sugiere que otros factores también influyen en el tamaño del área afectada por el fuego. La línea de regresión roja muestra esta tendencia ascendente, confirmando una correlación moderada entre ambas variables, pero con una gran variabilidad en los datos.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="análisis-exploratorio-de-datos-eda.html#cb30-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb30-2"><a href="análisis-exploratorio-de-datos-eda.html#cb30-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DMC, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="análisis-exploratorio-de-datos-eda.html#cb30-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="análisis-exploratorio-de-datos-eda.html#cb30-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb30-5"><a href="análisis-exploratorio-de-datos-eda.html#cb30-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;DMC&quot;</span>,</span>
+<span id="cb30-6"><a href="análisis-exploratorio-de-datos-eda.html#cb30-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb30-7"><a href="análisis-exploratorio-de-datos-eda.html#cb30-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb30-8"><a href="análisis-exploratorio-de-datos-eda.html#cb30-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb30-9"><a href="análisis-exploratorio-de-datos-eda.html#cb30-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre DMC y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+Los gráficos de dispersión entre FFMC y el área quemada, así como entre DMC y el área quemada, muestran una relación positiva entre ambas variables. A medida que el valor de FFMC y DMC aumentan, también lo hace el área quemada, lo que indica que un mayor riesgo de incendio, reflejado en mayores valores de estos índices, está asociado con un aumento en el tamaño del área afectada por el fuego. Sin embargo, ambos gráficos muestran una dispersión considerable, especialmente en los valores bajos de ambos índices, lo que sugiere que, aunque estos factores son importantes, otros como la temperatura, el viento o la humedad también influyen en la extensión del área quemada. La línea de regresión en ambos gráficos confirma la tendencia ascendente, pero la variabilidad en los datos indica que estos factores por sí solos no explican completamente el tamaño de los incendios</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="análisis-exploratorio-de-datos-eda.html#cb31-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb31-2"><a href="análisis-exploratorio-de-datos-eda.html#cb31-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DC, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb31-3"><a href="análisis-exploratorio-de-datos-eda.html#cb31-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="análisis-exploratorio-de-datos-eda.html#cb31-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb31-5"><a href="análisis-exploratorio-de-datos-eda.html#cb31-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;DMC&quot;</span>,</span>
+<span id="cb31-6"><a href="análisis-exploratorio-de-datos-eda.html#cb31-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb31-7"><a href="análisis-exploratorio-de-datos-eda.html#cb31-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-8"><a href="análisis-exploratorio-de-datos-eda.html#cb31-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb31-9"><a href="análisis-exploratorio-de-datos-eda.html#cb31-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre DC y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+El gráfico de dispersión muestra una relación positiva entre el DC y el área quemada. A medida que el valor de DC aumenta, también lo hace el área quemada, lo que sugiere que cuando la vegetación se encuentra en un estado más seco (mayores valores de DC), hay una mayor probabilidad de que los incendios afecten áreas más grandes. La línea de regresión roja muestra una relación ascendente, indicando que el índice DC tiene una correlación moderada con el tamaño del área quemada. Sin embargo, como en los otros gráficos, existe una gran dispersión en los datos, especialmente en los valores bajos de DC, donde el área quemada es principalmente pequeña o nula. Esto sugiere que, aunque DC es un factor importante, otros factores como la temperatura, el viento o la humedad también juegan un papel crucial en la propagación de los incendios.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="análisis-exploratorio-de-datos-eda.html#cb32-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb32-2"><a href="análisis-exploratorio-de-datos-eda.html#cb32-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ISI, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb32-3"><a href="análisis-exploratorio-de-datos-eda.html#cb32-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="análisis-exploratorio-de-datos-eda.html#cb32-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="análisis-exploratorio-de-datos-eda.html#cb32-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;ISI&quot;</span>,</span>
+<span id="cb32-6"><a href="análisis-exploratorio-de-datos-eda.html#cb32-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb32-7"><a href="análisis-exploratorio-de-datos-eda.html#cb32-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb32-8"><a href="análisis-exploratorio-de-datos-eda.html#cb32-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb32-9"><a href="análisis-exploratorio-de-datos-eda.html#cb32-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre ISI y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+El gráfico de dispersión muestra que no existe una relación clara entre el ISI y el área quemada. A pesar de que el ISI refleja un mayor riesgo de incendio, la dispersión de los puntos es amplia y no muestra una tendencia clara, como sí ocurre en otros gráficos. La línea de regresión roja casi horizontal sugiere que, a pesar de los valores más altos del índice, no se observa un aumento significativo en el área quemada. Esto indica que el ISI no está siendo un predictor fuerte del tamaño del área quemada, y otros factores, como la humedad, el viento o la vegetación, podrían estar jugando un papel más importante en la extensión de los incendios.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="análisis-exploratorio-de-datos-eda.html#cb33-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="análisis-exploratorio-de-datos-eda.html#cb33-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> temp, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="análisis-exploratorio-de-datos-eda.html#cb33-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="análisis-exploratorio-de-datos-eda.html#cb33-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-5"><a href="análisis-exploratorio-de-datos-eda.html#cb33-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Temperatura&quot;</span>,</span>
+<span id="cb33-6"><a href="análisis-exploratorio-de-datos-eda.html#cb33-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb33-7"><a href="análisis-exploratorio-de-datos-eda.html#cb33-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb33-8"><a href="análisis-exploratorio-de-datos-eda.html#cb33-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb33-9"><a href="análisis-exploratorio-de-datos-eda.html#cb33-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre temperatura y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+El gráfico de dispersión muestra una relación positiva débil entre Temperatura y el área quemada. A medida que la temperatura aumenta, también lo hace el área quemada, lo que indica que a temperaturas más altas, es más probable que los incendios afecten áreas mayores. Sin embargo, la dispersión de los puntos es considerable, lo que sugiere que la temperatura no es el único factor que influye en la magnitud de los incendios. La línea de regresión roja confirma la tendencia ascendente, pero la dispersión muestra que otros factores, como la humedad, el viento o el tipo de vegetación, también juegan un papel importante en la extensión de los incendios. En resumen, aunque la temperatura parece tener un efecto en el área quemada, su influencia es moderada comparada con otros factores.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="análisis-exploratorio-de-datos-eda.html#cb34-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb34-2"><a href="análisis-exploratorio-de-datos-eda.html#cb34-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> RH, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="análisis-exploratorio-de-datos-eda.html#cb34-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-4"><a href="análisis-exploratorio-de-datos-eda.html#cb34-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-5"><a href="análisis-exploratorio-de-datos-eda.html#cb34-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Humedad relativa&quot;</span>,</span>
+<span id="cb34-6"><a href="análisis-exploratorio-de-datos-eda.html#cb34-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb34-7"><a href="análisis-exploratorio-de-datos-eda.html#cb34-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb34-8"><a href="análisis-exploratorio-de-datos-eda.html#cb34-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb34-9"><a href="análisis-exploratorio-de-datos-eda.html#cb34-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre RH y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+El gráfico de dispersión muestra una relación negativa muy débil entre Humedad Relativa (RH) y el área quemada. A medida que la humedad relativa aumenta, el área quemada tiende a disminuir ligeramente, lo que sugiere que a mayores niveles de humedad, los incendios tienden a ser más pequeños o menos frecuentes. Sin embargo, la dispersión de los puntos es considerable y la línea de regresión roja casi horizontal confirma que no existe una correlación fuerte entre estas dos variables. Esto indica que, aunque la humedad relativa podría tener algún impacto en la propagación de los incendios, otros factores como la temperatura, el viento o el tipo de vegetación parecen influir de manera más significativa en la extensión del área quemada.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="análisis-exploratorio-de-datos-eda.html#cb35-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb35-2"><a href="análisis-exploratorio-de-datos-eda.html#cb35-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> rain, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="análisis-exploratorio-de-datos-eda.html#cb35-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-4"><a href="análisis-exploratorio-de-datos-eda.html#cb35-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-5"><a href="análisis-exploratorio-de-datos-eda.html#cb35-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Lluvia&quot;</span>,</span>
+<span id="cb35-6"><a href="análisis-exploratorio-de-datos-eda.html#cb35-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb35-7"><a href="análisis-exploratorio-de-datos-eda.html#cb35-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb35-8"><a href="análisis-exploratorio-de-datos-eda.html#cb35-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb35-9"><a href="análisis-exploratorio-de-datos-eda.html#cb35-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre lluvia y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+El gráfico de dispersión muestra una relación positiva muy débil entre Lluvia y el área quemada. La mayoría de los puntos se concentran cerca de 0 mm de lluvia, lo que indica que en la mayoría de los incendios no hubo precipitaciones significativas. A medida que la cantidad de lluvia aumenta, también lo hace el área quemada, pero esta relación es débil y con pocos puntos de datos, lo que sugiere que la lluvia no es un factor determinante en la extensión de los incendios. La línea de regresión roja confirma una tendencia ascendente, pero debido a la baja frecuencia de lluvias y la dispersión de los puntos, podemos concluir que la lluvia tiene un impacto mínimo en la propagación de los incendios en esta región</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="análisis-exploratorio-de-datos-eda.html#cb36-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb36-2"><a href="análisis-exploratorio-de-datos-eda.html#cb36-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> wind, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb36-3"><a href="análisis-exploratorio-de-datos-eda.html#cb36-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-4"><a href="análisis-exploratorio-de-datos-eda.html#cb36-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-5"><a href="análisis-exploratorio-de-datos-eda.html#cb36-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Viento&quot;</span>,</span>
+<span id="cb36-6"><a href="análisis-exploratorio-de-datos-eda.html#cb36-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb36-7"><a href="análisis-exploratorio-de-datos-eda.html#cb36-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb36-8"><a href="análisis-exploratorio-de-datos-eda.html#cb36-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb36-9"><a href="análisis-exploratorio-de-datos-eda.html#cb36-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre viento y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+El gráfico de dispersión muestra una relación positiva moderada entre Viento y el área quemada. A medida que la velocidad del viento aumenta, también tiende a aumentar el área quemada, lo que sugiere que el viento puede tener un impacto en la propagación de los incendios, acelerando su expansión. La línea de regresión roja confirma esta tendencia ascendente, lo que indica que el viento es un factor que, aunque no es el único determinante, parece jugar un papel en la extensión del área afectada por el fuego. Sin embargo, la dispersión de los puntos muestra que hay mucha variabilidad, por lo que no solo el viento influye en la magnitud del incendio, sino que otros factores como la temperatura, la humedad y la vegetación también deben ser considerados.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="análisis-exploratorio-de-datos-eda.html#cb37-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="análisis-exploratorio-de-datos-eda.html#cb37-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb37-3"><a href="análisis-exploratorio-de-datos-eda.html#cb37-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb37-4"><a href="análisis-exploratorio-de-datos-eda.html#cb37-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb37-5"><a href="análisis-exploratorio-de-datos-eda.html#cb37-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Coord.X&quot;</span>,</span>
+<span id="cb37-6"><a href="análisis-exploratorio-de-datos-eda.html#cb37-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb37-7"><a href="análisis-exploratorio-de-datos-eda.html#cb37-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb37-8"><a href="análisis-exploratorio-de-datos-eda.html#cb37-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb37-9"><a href="análisis-exploratorio-de-datos-eda.html#cb37-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre X y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="análisis-exploratorio-de-datos-eda.html#cb38-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="análisis-exploratorio-de-datos-eda.html#cb38-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Y, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="análisis-exploratorio-de-datos-eda.html#cb38-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb38-4"><a href="análisis-exploratorio-de-datos-eda.html#cb38-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb38-5"><a href="análisis-exploratorio-de-datos-eda.html#cb38-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Y&quot;</span>,</span>
+<span id="cb38-6"><a href="análisis-exploratorio-de-datos-eda.html#cb38-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb38-7"><a href="análisis-exploratorio-de-datos-eda.html#cb38-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb38-8"><a href="análisis-exploratorio-de-datos-eda.html#cb38-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb38-9"><a href="análisis-exploratorio-de-datos-eda.html#cb38-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre Y y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="análisis-bivariado-num-vs-cat" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Análisis bivariado num vs cat<a href="#an%C3%A1lisis-bivariado-num-vs-cat" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="análisis-exploratorio-de-datos-eda.html#cb39-1" tabindex="-1"></a><span class="co"># Agrupación por &quot;month&quot;</span></span>
+<span id="cb39-2"><a href="análisis-exploratorio-de-datos-eda.html#cb39-2" tabindex="-1"></a>agrup_month <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb39-3"><a href="análisis-exploratorio-de-datos-eda.html#cb39-3" tabindex="-1"></a>  <span class="fu">group_by</span>(month) <span class="sc">%&gt;%</span></span>
+<span id="cb39-4"><a href="análisis-exploratorio-de-datos-eda.html#cb39-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">length</span>(area),</span>
+<span id="cb39-5"><a href="análisis-exploratorio-de-datos-eda.html#cb39-5" tabindex="-1"></a>            <span class="at">media =</span> <span class="fu">mean</span>(area),</span>
+<span id="cb39-6"><a href="análisis-exploratorio-de-datos-eda.html#cb39-6" tabindex="-1"></a>            <span class="at">ds =</span> <span class="fu">sd</span>(area),</span>
+<span id="cb39-7"><a href="análisis-exploratorio-de-datos-eda.html#cb39-7" tabindex="-1"></a>            <span class="at">mediana =</span> <span class="fu">median</span>(area),</span>
+<span id="cb39-8"><a href="análisis-exploratorio-de-datos-eda.html#cb39-8" tabindex="-1"></a>            <span class="at">minimo =</span> <span class="fu">min</span>(area),</span>
+<span id="cb39-9"><a href="análisis-exploratorio-de-datos-eda.html#cb39-9" tabindex="-1"></a>            <span class="at">maximo =</span> <span class="fu">max</span>(area),</span>
+<span id="cb39-10"><a href="análisis-exploratorio-de-datos-eda.html#cb39-10" tabindex="-1"></a>            <span class="at">Q1 =</span> <span class="fu">quantile</span>(area, <span class="fl">0.25</span>),</span>
+<span id="cb39-11"><a href="análisis-exploratorio-de-datos-eda.html#cb39-11" tabindex="-1"></a>            <span class="at">Q3 =</span> <span class="fu">quantile</span>(area, <span class="fl">0.75</span>),</span>
+<span id="cb39-12"><a href="análisis-exploratorio-de-datos-eda.html#cb39-12" tabindex="-1"></a>            <span class="at">IQR =</span> <span class="fu">IQR</span>(area)) <span class="sc">%&gt;%</span></span>
+<span id="cb39-13"><a href="análisis-exploratorio-de-datos-eda.html#cb39-13" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;month&quot;</span>, <span class="at">niveles =</span> <span class="fu">as.character</span>(month)) <span class="sc">%&gt;%</span></span>
+<span id="cb39-14"><a href="análisis-exploratorio-de-datos-eda.html#cb39-14" tabindex="-1"></a>  <span class="fu">select</span>(variable, niveles, <span class="fu">everything</span>(), <span class="sc">-</span>month)</span>
+<span id="cb39-15"><a href="análisis-exploratorio-de-datos-eda.html#cb39-15" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb39-16"><a href="análisis-exploratorio-de-datos-eda.html#cb39-16" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb39-17"><a href="análisis-exploratorio-de-datos-eda.html#cb39-17" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#87CEFA&quot;</span>, <span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb39-18"><a href="análisis-exploratorio-de-datos-eda.html#cb39-18" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;darkblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb39-19"><a href="análisis-exploratorio-de-datos-eda.html#cb39-19" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Mes del año&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span>) <span class="sc">+</span></span>
+<span id="cb39-20"><a href="análisis-exploratorio-de-datos-eda.html#cb39-20" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb39-21"><a href="análisis-exploratorio-de-datos-eda.html#cb39-21" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span><span class="st">&quot;Distribución de área quemada por meses del año&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="análisis-exploratorio-de-datos-eda.html#cb40-1" tabindex="-1"></a>agrup_day <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb40-2"><a href="análisis-exploratorio-de-datos-eda.html#cb40-2" tabindex="-1"></a>  <span class="fu">group_by</span>(day) <span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href="análisis-exploratorio-de-datos-eda.html#cb40-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">length</span>(area),</span>
+<span id="cb40-4"><a href="análisis-exploratorio-de-datos-eda.html#cb40-4" tabindex="-1"></a>            <span class="at">media =</span> <span class="fu">mean</span>(area),</span>
+<span id="cb40-5"><a href="análisis-exploratorio-de-datos-eda.html#cb40-5" tabindex="-1"></a>            <span class="at">ds =</span> <span class="fu">sd</span>(area),</span>
+<span id="cb40-6"><a href="análisis-exploratorio-de-datos-eda.html#cb40-6" tabindex="-1"></a>            <span class="at">mediana =</span> <span class="fu">median</span>(area),</span>
+<span id="cb40-7"><a href="análisis-exploratorio-de-datos-eda.html#cb40-7" tabindex="-1"></a>            <span class="at">minimo =</span> <span class="fu">min</span>(area),</span>
+<span id="cb40-8"><a href="análisis-exploratorio-de-datos-eda.html#cb40-8" tabindex="-1"></a>            <span class="at">maximo =</span> <span class="fu">max</span>(area),</span>
+<span id="cb40-9"><a href="análisis-exploratorio-de-datos-eda.html#cb40-9" tabindex="-1"></a>            <span class="at">Q1 =</span> <span class="fu">quantile</span>(area, <span class="fl">0.25</span>),</span>
+<span id="cb40-10"><a href="análisis-exploratorio-de-datos-eda.html#cb40-10" tabindex="-1"></a>            <span class="at">Q3 =</span> <span class="fu">quantile</span>(area, <span class="fl">0.75</span>),</span>
+<span id="cb40-11"><a href="análisis-exploratorio-de-datos-eda.html#cb40-11" tabindex="-1"></a>            <span class="at">IQR =</span> <span class="fu">IQR</span>(area)) <span class="sc">%&gt;%</span></span>
+<span id="cb40-12"><a href="análisis-exploratorio-de-datos-eda.html#cb40-12" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;day&quot;</span>, <span class="at">niveles =</span> <span class="fu">as.character</span>(day)) <span class="sc">%&gt;%</span></span>
+<span id="cb40-13"><a href="análisis-exploratorio-de-datos-eda.html#cb40-13" tabindex="-1"></a>  <span class="fu">select</span>(variable, niveles, <span class="fu">everything</span>(), <span class="sc">-</span>day)</span>
+<span id="cb40-14"><a href="análisis-exploratorio-de-datos-eda.html#cb40-14" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb40-15"><a href="análisis-exploratorio-de-datos-eda.html#cb40-15" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> day, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb40-16"><a href="análisis-exploratorio-de-datos-eda.html#cb40-16" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#87CEFA&quot;</span>, <span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb40-17"><a href="análisis-exploratorio-de-datos-eda.html#cb40-17" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;darkblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb40-18"><a href="análisis-exploratorio-de-datos-eda.html#cb40-18" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Días de la semana&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span>) <span class="sc">+</span></span>
+<span id="cb40-19"><a href="análisis-exploratorio-de-datos-eda.html#cb40-19" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb40-20"><a href="análisis-exploratorio-de-datos-eda.html#cb40-20" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span><span class="st">&quot;Distribución de área quemada por día de la semana&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="análisis-exploratorio-de-datos-eda.html#cb41-1" tabindex="-1"></a><span class="co"># Unión de las dos tablas</span></span>
+<span id="cb41-2"><a href="análisis-exploratorio-de-datos-eda.html#cb41-2" tabindex="-1"></a><span class="fu">bind_rows</span>(agrup_month, agrup_day)</span></code></pre></div>
+<pre><code>## # A tibble: 19 × 11
+##    variable niveles     n media     ds mediana minimo maximo    Q1    Q3   IQR
+##    &lt;chr&gt;    &lt;chr&gt;   &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 month    jan         2  0      0      0       0       0    0     0     0   
+##  2 month    feb        20  6.28  12.3    0.55    0      51.8  0     6.50  6.50
+##  3 month    mar        54  4.36   9.14   0       0      36.8  0     3.02  3.02
+##  4 month    apr         9  8.89  19.9    0       0      61.1  0     4.61  4.61
+##  5 month    may         2 19.2   27.2   19.2     0      38.5  9.62 28.9  19.2 
+##  6 month    jun        17  5.84  16.9    0       0      70.3  0     3.19  3.19
+##  7 month    jul        32 14.4   50.8    1.04    0     279.   0     6.37  6.37
+##  8 month    aug       184 12.5   60.4    0.545   0     746.   0     5.03  5.03
+##  9 month    sep       172 17.9   87.6    1.36    0    1091.   0     7.56  7.56
+## 10 month    oct        15  6.64  13.7    0       0      49.4  0     6.14  6.14
+## 11 month    nov         1  0     NA      0       0       0    0     0     0   
+## 12 month    dec         9 13.3    6.61  10.7     5.38   24.8  9.27 17.8   8.58
+## 13 day      mon        74  9.55  33.7    0.745   0     279.   0     6.03  6.03
+## 14 day      tue        64 12.6   33.6    0.655   0     213.   0     8.85  8.85
+## 15 day      wed        54 10.7   30.3    0.76    0     186.   0     5.78  5.78
+## 16 day      thu        61 16.3   95.4    0.9     0     746.   0     4.95  4.95
+## 17 day      fri        85  5.26  10.0    0.33    0      43.3  0     5.97  5.97
+## 18 day      sat        84 25.5  123.     0.34    0    1091.   0     7.55  7.55
+## 19 day      sun        95 10.1   26.1    0       0     196.   0     6.82  6.82</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="análisis-exploratorio-de-datos-eda.html#cb43-1" tabindex="-1"></a>g1 <span class="sc">/</span> g2</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+La distribución de área quemada por meses del año muestra una clara concentración de incendios durante los meses de junio, julio y agosto, que coinciden con el verano, cuando las condiciones climáticas favorecen la propagación del fuego. Aunque la distribución por días de la semana también es interesante, ya que muestra una mayor actividad los viernes y domingo, la estacionalidad en los meses del año tiene un impacto más directo y significativo en la extensión de los incendios, lo que es crucial para predecir y gestionar los incendios forestales en función de las condiciones climáticas.</p>
+</div>
+<div id="conclusiones-eda" class="section level2 hasAnchor" number="2.7">
+<h2><span class="header-section-number">2.7</span> Conclusiones EDA<a href="análisis-exploratorio-de-datos-eda.html#conclusiones-eda" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>El área quemada sigue un patrón de pocos incendios grandes entre muchísimos pequeños, donde aproximadamente más del 75% de los registros tienen un área quemada menor a 5 hectáreas, influenciado por clima, índices de combustible y época del año, el análisis del área quemada en los incendios forestales en el bosque Montesinho revela un comportamiento altamente sesgado y con distribución desigual.
+Inicialmente se evidencia una relación con las variables del índice FFMC, con valores más acumulados hacia la derecha, y la época del año, siendo agosto y septiembre, por mucho, los meses con más frecuencia de incendios forestales.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introducción.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="inferencial.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/02-literature.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Inferencial | Forest Fires</title>
+  <meta name="description" content="Chapter 3 Inferencial | Forest Fires" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Inferencial | Forest Fires" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Inferencial | Forest Fires" />
+  
+  
+  
+
+<meta name="author" content="Abrahan Basto, Valamy Donado, Abraham Navarro" />
+
+
+<meta name="date" content="2025-10-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="análisis-exploratorio-de-datos-eda.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="02-literature.html"><a href="#introducci%C3%B3n"><i class="fa fa-check"></i><b>1</b> Introducción</a></li>
+<li class="chapter" data-level="2" data-path="02-literature.html"><a href="#an%C3%A1lisis-exploratorio-de-datos-eda"><i class="fa fa-check"></i><b>2</b> Análisis Exploratorio de Datos (EDA)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="análisis-exploratorio-de-datos-eda.html"><a href="análisis-exploratorio-de-datos-eda.html"><i class="fa fa-check"></i><b>2.1</b> Datos</a></li>
+<li class="chapter" data-level="2.2" data-path="02-literature.html"><a href="#an%C3%A1lisis-de-la-variable-target-%C3%A1rea"><i class="fa fa-check"></i><b>2.2</b> Análisis de la variable target (área)</a></li>
+<li class="chapter" data-level="2.3" data-path="02-literature.html"><a href="#variables-independientes-num%C3%A9ricas"><i class="fa fa-check"></i><b>2.3</b> Variables independientes numéricas</a></li>
+<li class="chapter" data-level="2.4" data-path="02-literature.html"><a href="#variables-independientes-categ%C3%B3ricas"><i class="fa fa-check"></i><b>2.4</b> Variables independientes categóricas</a></li>
+<li class="chapter" data-level="2.5" data-path="02-literature.html"><a href="#an%C3%A1lisis-bivariado-num-vs-num"><i class="fa fa-check"></i><b>2.5</b> Análisis bivariado num vs num</a></li>
+<li class="chapter" data-level="2.6" data-path="02-literature.html"><a href="#an%C3%A1lisis-bivariado-num-vs-cat"><i class="fa fa-check"></i><b>2.6</b> Análisis bivariado num vs cat</a></li>
+<li class="chapter" data-level="2.7" data-path="análisis-exploratorio-de-datos-eda.html"><a href="análisis-exploratorio-de-datos-eda.html#conclusiones-eda"><i class="fa fa-check"></i><b>2.7</b> Conclusiones EDA</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="inferencial.html"><a href="inferencial.html"><i class="fa fa-check"></i><b>3</b> Inferencial</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="02-literature.html"><a href="#correlaci%C3%B3n-y-kruskal-wallis"><i class="fa fa-check"></i><b>3.1</b> Correlación y Kruskal-Wallis</a></li>
+<li class="chapter" data-level="3.2" data-path="02-literature.html"><a href="#conclusi%C3%B3n-inferencial"><i class="fa fa-check"></i><b>3.2</b> Conclusión inferencial</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Forest Fires</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="inferencial" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Inferencial<a href="inferencial.html#inferencial" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="correlación-y-kruskal-wallis" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Correlación y Kruskal-Wallis<a href="#correlaci%C3%B3n-y-kruskal-wallis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Hagamos prueba de Kolmogorov_Smirnov a las variables numéricas para probar si siguen una distribución normal</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="inferencial.html#cb44-1" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;area&quot;</span>, <span class="st">&quot;X&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;FFMC&quot;</span>, <span class="st">&quot;DMC&quot;</span>, <span class="st">&quot;DC&quot;</span>, <span class="st">&quot;ISI&quot;</span>, <span class="st">&quot;temp&quot;</span>, <span class="st">&quot;RH&quot;</span>, <span class="st">&quot;wind&quot;</span>, <span class="st">&quot;rain&quot;</span>)</span>
+<span id="cb44-2"><a href="inferencial.html#cb44-2" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="inferencial.html#cb44-3" tabindex="-1"></a>ks_results <span class="ot">&lt;-</span> <span class="fu">lapply</span>(vars, <span class="cf">function</span>(v) {</span>
+<span id="cb44-4"><a href="inferencial.html#cb44-4" tabindex="-1"></a>  test <span class="ot">&lt;-</span> <span class="fu">ks.test</span>(<span class="fu">scale</span>(df[[v]]), pnorm)</span>
+<span id="cb44-5"><a href="inferencial.html#cb44-5" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb44-6"><a href="inferencial.html#cb44-6" tabindex="-1"></a>    <span class="at">Variable =</span> v,</span>
+<span id="cb44-7"><a href="inferencial.html#cb44-7" tabindex="-1"></a>    <span class="at">D =</span> <span class="fu">round</span>(test<span class="sc">$</span>statistic, <span class="dv">5</span>),</span>
+<span id="cb44-8"><a href="inferencial.html#cb44-8" tabindex="-1"></a>    <span class="at">p_value =</span> <span class="fu">format.pval</span>(test<span class="sc">$</span>p.value, <span class="at">digits =</span> <span class="dv">3</span>, <span class="at">eps =</span> .<span class="dv">001</span>),</span>
+<span id="cb44-9"><a href="inferencial.html#cb44-9" tabindex="-1"></a>    <span class="at">Normalidad =</span> <span class="fu">ifelse</span>(test<span class="sc">$</span>p.value <span class="sc">&gt;</span> <span class="fl">0.05</span>, <span class="st">&quot;No se rechaza normalidad&quot;</span>, <span class="st">&quot;Se rechaza normalidad&quot;</span>)</span>
+<span id="cb44-10"><a href="inferencial.html#cb44-10" tabindex="-1"></a>  )</span>
+<span id="cb44-11"><a href="inferencial.html#cb44-11" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test
+## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test
+## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test
+## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test
+## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test
+## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test
+## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test
+## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test
+## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test
+## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test
+## Warning in ks.test.default(scale(df[[v]]), pnorm): ties should not be present
+## for the one-sample Kolmogorov-Smirnov test</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="inferencial.html#cb46-1" tabindex="-1"></a>ks_summary <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, ks_results)</span>
+<span id="cb46-2"><a href="inferencial.html#cb46-2" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="inferencial.html#cb46-3" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(ks_summary, <span class="at">caption =</span> <span class="st">&quot;Resumen del test de Kolmogorov–Smirnov para variables numéricas&quot;</span>)</span></code></pre></div>
+<table>
+<caption><span id="tab:unnamed-chunk-32">Table 3.1: </span>Resumen del test de Kolmogorov–Smirnov para variables numéricas</caption>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Variable</th>
+<th align="right">D</th>
+<th align="left">p_value</th>
+<th align="left">Normalidad</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">D</td>
+<td align="left">area</td>
+<td align="right">0.42003</td>
+<td align="left">&lt;0.001</td>
+<td align="left">Se rechaza normalidad</td>
+</tr>
+<tr class="even">
+<td align="left">D1</td>
+<td align="left">X</td>
+<td align="right">0.14293</td>
+<td align="left">&lt;0.001</td>
+<td align="left">Se rechaza normalidad</td>
+</tr>
+<tr class="odd">
+<td align="left">D2</td>
+<td align="left">Y</td>
+<td align="right">0.19784</td>
+<td align="left">&lt;0.001</td>
+<td align="left">Se rechaza normalidad</td>
+</tr>
+<tr class="even">
+<td align="left">D3</td>
+<td align="left">FFMC</td>
+<td align="right">0.25180</td>
+<td align="left">&lt;0.001</td>
+<td align="left">Se rechaza normalidad</td>
+</tr>
+<tr class="odd">
+<td align="left">D4</td>
+<td align="left">DMC</td>
+<td align="right">0.07529</td>
+<td align="left">0.00569</td>
+<td align="left">Se rechaza normalidad</td>
+</tr>
+<tr class="even">
+<td align="left">D5</td>
+<td align="left">DC</td>
+<td align="right">0.23135</td>
+<td align="left">&lt;0.001</td>
+<td align="left">Se rechaza normalidad</td>
+</tr>
+<tr class="odd">
+<td align="left">D6</td>
+<td align="left">ISI</td>
+<td align="right">0.13232</td>
+<td align="left">&lt;0.001</td>
+<td align="left">Se rechaza normalidad</td>
+</tr>
+<tr class="even">
+<td align="left">D7</td>
+<td align="left">temp</td>
+<td align="right">0.05077</td>
+<td align="left">0.139</td>
+<td align="left">No se rechaza normalidad</td>
+</tr>
+<tr class="odd">
+<td align="left">D8</td>
+<td align="left">RH</td>
+<td align="right">0.10619</td>
+<td align="left">&lt;0.001</td>
+<td align="left">Se rechaza normalidad</td>
+</tr>
+<tr class="even">
+<td align="left">D9</td>
+<td align="left">wind</td>
+<td align="right">0.09998</td>
+<td align="left">&lt;0.001</td>
+<td align="left">Se rechaza normalidad</td>
+</tr>
+<tr class="odd">
+<td align="left">D10</td>
+<td align="left">rain</td>
+<td align="right">0.51370</td>
+<td align="left">&lt;0.001</td>
+<td align="left">Se rechaza normalidad</td>
+</tr>
+</tbody>
+</table>
+<p>Ninguna de las variables numéricas independientes es normal, exceptuando temperatura.
+No podemos aplicar Pearson, ya que no cumplen con el supuesto de normalidad, por lo tanto, aplicamos una prueba no paramétrica de correlación, Spearman.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="inferencial.html#cb47-1" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;X&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;FFMC&quot;</span>, <span class="st">&quot;DMC&quot;</span>, <span class="st">&quot;DC&quot;</span>, <span class="st">&quot;ISI&quot;</span>, <span class="st">&quot;temp&quot;</span>,<span class="st">&quot;RH&quot;</span>, <span class="st">&quot;wind&quot;</span>, <span class="st">&quot;rain&quot;</span>)</span>
+<span id="cb47-2"><a href="inferencial.html#cb47-2" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="inferencial.html#cb47-3" tabindex="-1"></a>tabla_cor <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(vars, <span class="cf">function</span>(v) {</span>
+<span id="cb47-4"><a href="inferencial.html#cb47-4" tabindex="-1"></a>  test <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(df<span class="sc">$</span>area, df[[v]], <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb47-5"><a href="inferencial.html#cb47-5" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb47-6"><a href="inferencial.html#cb47-6" tabindex="-1"></a>    <span class="at">variable =</span> v,</span>
+<span id="cb47-7"><a href="inferencial.html#cb47-7" tabindex="-1"></a>    <span class="at">rho =</span> test<span class="sc">$</span>estimate,</span>
+<span id="cb47-8"><a href="inferencial.html#cb47-8" tabindex="-1"></a>    <span class="at">p_value =</span> test<span class="sc">$</span>p.value</span>
+<span id="cb47-9"><a href="inferencial.html#cb47-9" tabindex="-1"></a>  )</span>
+<span id="cb47-10"><a href="inferencial.html#cb47-10" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>## Warning in cor.test.default(df$area, df[[v]], method = &quot;spearman&quot;): Cannot
+## compute exact p-value with ties
+## Warning in cor.test.default(df$area, df[[v]], method = &quot;spearman&quot;): Cannot
+## compute exact p-value with ties
+## Warning in cor.test.default(df$area, df[[v]], method = &quot;spearman&quot;): Cannot
+## compute exact p-value with ties
+## Warning in cor.test.default(df$area, df[[v]], method = &quot;spearman&quot;): Cannot
+## compute exact p-value with ties
+## Warning in cor.test.default(df$area, df[[v]], method = &quot;spearman&quot;): Cannot
+## compute exact p-value with ties
+## Warning in cor.test.default(df$area, df[[v]], method = &quot;spearman&quot;): Cannot
+## compute exact p-value with ties
+## Warning in cor.test.default(df$area, df[[v]], method = &quot;spearman&quot;): Cannot
+## compute exact p-value with ties
+## Warning in cor.test.default(df$area, df[[v]], method = &quot;spearman&quot;): Cannot
+## compute exact p-value with ties
+## Warning in cor.test.default(df$area, df[[v]], method = &quot;spearman&quot;): Cannot
+## compute exact p-value with ties
+## Warning in cor.test.default(df$area, df[[v]], method = &quot;spearman&quot;): Cannot
+## compute exact p-value with ties</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="inferencial.html#cb49-1" tabindex="-1"></a>tabla_cor <span class="sc">%&gt;%</span></span>
+<span id="cb49-2"><a href="inferencial.html#cb49-2" tabindex="-1"></a>  <span class="fu">arrange</span>(p_value)</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 3
+##    variable     rho p_value
+##    &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+##  1 temp      0.0787  0.0738
+##  2 DMC       0.0719  0.102 
+##  3 rain     -0.0641  0.146 
+##  4 DC        0.0616  0.162 
+##  5 X         0.0605  0.170 
+##  6 wind      0.0532  0.227 
+##  7 Y         0.0460  0.296 
+##  8 FFMC      0.0253  0.566 
+##  9 RH       -0.0242  0.583 
+## 10 ISI       0.0125  0.777</code></pre>
+<p>Los resultados del análisis de correlación de Spearman entre el área quemada y las variables independientes muestran coeficientes de correlación bajos en todos los casos, indicando relaciones débiles. Además, los p valor son mayores a 0.05 en todas las variables, lo que significa que ninguna correlación es estadísticamente significativa al 5%. La temperatura (rho = 0.0787, p = 0.0738) tiene el coeficiente más alto y el p valor más cercano a 0.05, pero sigue siendo débil. Esto sugiere que el área afectada por incendios no depende de manera directa o fuerte de ninguna de las variables analizadas.</p>
+<p>Recordemos las gráficas de correlación</p>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-35-1.png" width="672" /><img src="bookdown-demo_files/figure-html/unnamed-chunk-35-2.png" width="672" /><img src="bookdown-demo_files/figure-html/unnamed-chunk-35-3.png" width="672" /><img src="bookdown-demo_files/figure-html/unnamed-chunk-35-4.png" width="672" /><img src="bookdown-demo_files/figure-html/unnamed-chunk-35-5.png" width="672" /><img src="bookdown-demo_files/figure-html/unnamed-chunk-35-6.png" width="672" /><img src="bookdown-demo_files/figure-html/unnamed-chunk-35-7.png" width="672" /><img src="bookdown-demo_files/figure-html/unnamed-chunk-35-8.png" width="672" /><img src="bookdown-demo_files/figure-html/unnamed-chunk-35-9.png" width="672" /><img src="bookdown-demo_files/figure-html/unnamed-chunk-35-10.png" width="672" /></p>
+<p>Aplicamos test no paramétrico de Kruskal-Wallis, para comparar área (numérica) con mes y día (categóricas)</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="inferencial.html#cb51-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(area <span class="sc">~</span> month, <span class="at">data =</span> df)</span></code></pre></div>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  area by month
+## Kruskal-Wallis chi-squared = 23.723, df = 11, p-value = 0.01396</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="inferencial.html#cb53-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(area <span class="sc">~</span> day, <span class="at">data =</span> df)</span></code></pre></div>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  area by day
+## Kruskal-Wallis chi-squared = 1.1977, df = 6, p-value = 0.977</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="inferencial.html#cb55-1" tabindex="-1"></a><span class="fu">pairwise.wilcox.test</span>(<span class="at">x =</span> datos<span class="sc">$</span>area,</span>
+<span id="cb55-2"><a href="inferencial.html#cb55-2" tabindex="-1"></a>                     <span class="at">g =</span> datos<span class="sc">$</span>month,</span>
+<span id="cb55-3"><a href="inferencial.html#cb55-3" tabindex="-1"></a>                     <span class="at">exact =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb55-4"><a href="inferencial.html#cb55-4" tabindex="-1"></a>                     <span class="at">p.adjust.method =</span> <span class="st">&quot;bonferroni&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Pairwise comparisons using Wilcoxon rank sum test with continuity correction 
+## 
+## data:  datos$area and datos$month 
+## 
+##     apr   aug   dec   feb   jan   jul   jun   mar   may   nov   oct  
+## aug 1.000 -     -     -     -     -     -     -     -     -     -    
+## dec 1.000 0.011 -     -     -     -     -     -     -     -     -    
+## feb 1.000 1.000 0.272 -     -     -     -     -     -     -     -    
+## jan 1.000 1.000 1.000 1.000 -     -     -     -     -     -     -    
+## jul 1.000 1.000 0.025 1.000 1.000 -     -     -     -     -     -    
+## jun 1.000 1.000 0.042 1.000 1.000 1.000 -     -     -     -     -    
+## mar 1.000 1.000 0.007 1.000 1.000 1.000 1.000 -     -     -     -    
+## may 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000 -     -     -    
+## nov 1.000 1.000 1.000 1.000 -     1.000 1.000 1.000 1.000 -     -    
+## oct 1.000 1.000 0.607 1.000 1.000 1.000 1.000 1.000 1.000 1.000 -    
+## sep 1.000 1.000 0.155 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000
+## 
+## P value adjustment method: bonferroni</code></pre>
+<p>La prueba no paramétrica de Kruskal-Wallis se aplicó para evaluar si existían diferencias significativas en el área quemada entre los distintos meses y días. En el caso de los meses, sí existen diferencias estadísticamente significativas (p = 0.01396), lo que puede indicar que el área afectada por incendios varía según el mes del año. En cambio, para los días de la semana (p = 0.977), no se encontraron diferencias significativas. El análisis post-hoc con la prueba de Wilcoxon reveló que las diferencias más notorias se dan entre meses como diciembre y agosto, diciembre y julio, entre otros, lo que sugiere una posible influencia estacional (verano) sobre los incendios</p>
+<p>Al encontrar esas posibles relaciones que llaman la atención, analizamos temperatura con meses</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="inferencial.html#cb57-1" tabindex="-1"></a><span class="co"># Agrupación por &quot;month&quot;</span></span>
+<span id="cb57-2"><a href="inferencial.html#cb57-2" tabindex="-1"></a>agrup_month <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb57-3"><a href="inferencial.html#cb57-3" tabindex="-1"></a>  <span class="fu">group_by</span>(month) <span class="sc">%&gt;%</span></span>
+<span id="cb57-4"><a href="inferencial.html#cb57-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">length</span>(area),</span>
+<span id="cb57-5"><a href="inferencial.html#cb57-5" tabindex="-1"></a>            <span class="at">media =</span> <span class="fu">mean</span>(area),</span>
+<span id="cb57-6"><a href="inferencial.html#cb57-6" tabindex="-1"></a>            <span class="at">ds =</span> <span class="fu">sd</span>(area),</span>
+<span id="cb57-7"><a href="inferencial.html#cb57-7" tabindex="-1"></a>            <span class="at">mediana =</span> <span class="fu">median</span>(area),</span>
+<span id="cb57-8"><a href="inferencial.html#cb57-8" tabindex="-1"></a>            <span class="at">minimo =</span> <span class="fu">min</span>(area),</span>
+<span id="cb57-9"><a href="inferencial.html#cb57-9" tabindex="-1"></a>            <span class="at">maximo =</span> <span class="fu">max</span>(area),</span>
+<span id="cb57-10"><a href="inferencial.html#cb57-10" tabindex="-1"></a>            <span class="at">Q1 =</span> <span class="fu">quantile</span>(area, <span class="fl">0.25</span>),</span>
+<span id="cb57-11"><a href="inferencial.html#cb57-11" tabindex="-1"></a>            <span class="at">Q3 =</span> <span class="fu">quantile</span>(area, <span class="fl">0.75</span>),</span>
+<span id="cb57-12"><a href="inferencial.html#cb57-12" tabindex="-1"></a>            <span class="at">IQR =</span> <span class="fu">IQR</span>(area)) <span class="sc">%&gt;%</span></span>
+<span id="cb57-13"><a href="inferencial.html#cb57-13" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;month&quot;</span>, <span class="at">niveles =</span> <span class="fu">as.character</span>(month)) <span class="sc">%&gt;%</span></span>
+<span id="cb57-14"><a href="inferencial.html#cb57-14" tabindex="-1"></a>  <span class="fu">select</span>(variable, niveles, <span class="fu">everything</span>(), <span class="sc">-</span>month)</span>
+<span id="cb57-15"><a href="inferencial.html#cb57-15" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb57-16"><a href="inferencial.html#cb57-16" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb57-17"><a href="inferencial.html#cb57-17" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#87CEFA&quot;</span>, <span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb57-18"><a href="inferencial.html#cb57-18" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;darkblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb57-19"><a href="inferencial.html#cb57-19" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Mes del año&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span>) <span class="sc">+</span></span>
+<span id="cb57-20"><a href="inferencial.html#cb57-20" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb57-21"><a href="inferencial.html#cb57-21" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span><span class="st">&quot;Distribución de área quemada por meses del año&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="inferencial.html#cb58-1" tabindex="-1"></a>agrup_day <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb58-2"><a href="inferencial.html#cb58-2" tabindex="-1"></a>  <span class="fu">group_by</span>(day) <span class="sc">%&gt;%</span></span>
+<span id="cb58-3"><a href="inferencial.html#cb58-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">length</span>(area),</span>
+<span id="cb58-4"><a href="inferencial.html#cb58-4" tabindex="-1"></a>            <span class="at">media =</span> <span class="fu">mean</span>(area),</span>
+<span id="cb58-5"><a href="inferencial.html#cb58-5" tabindex="-1"></a>            <span class="at">ds =</span> <span class="fu">sd</span>(area),</span>
+<span id="cb58-6"><a href="inferencial.html#cb58-6" tabindex="-1"></a>            <span class="at">mediana =</span> <span class="fu">median</span>(area),</span>
+<span id="cb58-7"><a href="inferencial.html#cb58-7" tabindex="-1"></a>            <span class="at">minimo =</span> <span class="fu">min</span>(area),</span>
+<span id="cb58-8"><a href="inferencial.html#cb58-8" tabindex="-1"></a>            <span class="at">maximo =</span> <span class="fu">max</span>(area),</span>
+<span id="cb58-9"><a href="inferencial.html#cb58-9" tabindex="-1"></a>            <span class="at">Q1 =</span> <span class="fu">quantile</span>(area, <span class="fl">0.25</span>),</span>
+<span id="cb58-10"><a href="inferencial.html#cb58-10" tabindex="-1"></a>            <span class="at">Q3 =</span> <span class="fu">quantile</span>(area, <span class="fl">0.75</span>),</span>
+<span id="cb58-11"><a href="inferencial.html#cb58-11" tabindex="-1"></a>            <span class="at">IQR =</span> <span class="fu">IQR</span>(area)) <span class="sc">%&gt;%</span></span>
+<span id="cb58-12"><a href="inferencial.html#cb58-12" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;day&quot;</span>, <span class="at">niveles =</span> <span class="fu">as.character</span>(day)) <span class="sc">%&gt;%</span></span>
+<span id="cb58-13"><a href="inferencial.html#cb58-13" tabindex="-1"></a>  <span class="fu">select</span>(variable, niveles, <span class="fu">everything</span>(), <span class="sc">-</span>day)</span>
+<span id="cb58-14"><a href="inferencial.html#cb58-14" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb58-15"><a href="inferencial.html#cb58-15" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> day, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb58-16"><a href="inferencial.html#cb58-16" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#87CEFA&quot;</span>, <span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb58-17"><a href="inferencial.html#cb58-17" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;darkblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb58-18"><a href="inferencial.html#cb58-18" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Días de la semana&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span>) <span class="sc">+</span></span>
+<span id="cb58-19"><a href="inferencial.html#cb58-19" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb58-20"><a href="inferencial.html#cb58-20" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span><span class="st">&quot;Distribución de área quemada por día de la semana&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="inferencial.html#cb59-1" tabindex="-1"></a>g1 <span class="sc">/</span> g2</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="inferencial.html#cb60-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb60-2"><a href="inferencial.html#cb60-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> temp, <span class="at">y =</span> area)) <span class="sc">+</span></span>
+<span id="cb60-3"><a href="inferencial.html#cb60-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>) <span class="sc">+</span></span>
+<span id="cb60-4"><a href="inferencial.html#cb60-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb60-5"><a href="inferencial.html#cb60-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Temperatura&quot;</span>,</span>
+<span id="cb60-6"><a href="inferencial.html#cb60-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Área quemada&quot;</span></span>
+<span id="cb60-7"><a href="inferencial.html#cb60-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb60-8"><a href="inferencial.html#cb60-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb60-9"><a href="inferencial.html#cb60-9" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span> <span class="st">&quot;Dispersión entre temp y área quemada&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="inferencial.html#cb61-1" tabindex="-1"></a>agrup_month <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb61-2"><a href="inferencial.html#cb61-2" tabindex="-1"></a>  <span class="fu">group_by</span>(month) <span class="sc">%&gt;%</span></span>
+<span id="cb61-3"><a href="inferencial.html#cb61-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">length</span>(temp),</span>
+<span id="cb61-4"><a href="inferencial.html#cb61-4" tabindex="-1"></a>            <span class="at">media =</span> <span class="fu">mean</span>(temp),</span>
+<span id="cb61-5"><a href="inferencial.html#cb61-5" tabindex="-1"></a>            <span class="at">ds =</span> <span class="fu">sd</span>(temp),</span>
+<span id="cb61-6"><a href="inferencial.html#cb61-6" tabindex="-1"></a>            <span class="at">mediana =</span> <span class="fu">median</span>(temp),</span>
+<span id="cb61-7"><a href="inferencial.html#cb61-7" tabindex="-1"></a>            <span class="at">minimo =</span> <span class="fu">min</span>(temp),</span>
+<span id="cb61-8"><a href="inferencial.html#cb61-8" tabindex="-1"></a>            <span class="at">maximo =</span> <span class="fu">max</span>(temp),</span>
+<span id="cb61-9"><a href="inferencial.html#cb61-9" tabindex="-1"></a>            <span class="at">Q1 =</span> <span class="fu">quantile</span>(temp, <span class="fl">0.25</span>),</span>
+<span id="cb61-10"><a href="inferencial.html#cb61-10" tabindex="-1"></a>            <span class="at">Q3 =</span> <span class="fu">quantile</span>(temp, <span class="fl">0.75</span>),</span>
+<span id="cb61-11"><a href="inferencial.html#cb61-11" tabindex="-1"></a>            <span class="at">IQR =</span> <span class="fu">IQR</span>(temp)) <span class="sc">%&gt;%</span></span>
+<span id="cb61-12"><a href="inferencial.html#cb61-12" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">&quot;month&quot;</span>, <span class="at">niveles =</span> <span class="fu">as.character</span>(month)) <span class="sc">%&gt;%</span></span>
+<span id="cb61-13"><a href="inferencial.html#cb61-13" tabindex="-1"></a>  <span class="fu">select</span>(variable, niveles, <span class="fu">everything</span>(), <span class="sc">-</span>month)</span>
+<span id="cb61-14"><a href="inferencial.html#cb61-14" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb61-15"><a href="inferencial.html#cb61-15" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">y =</span> temp)) <span class="sc">+</span></span>
+<span id="cb61-16"><a href="inferencial.html#cb61-16" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#87CEFA&quot;</span>, <span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb61-17"><a href="inferencial.html#cb61-17" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;darkblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb61-18"><a href="inferencial.html#cb61-18" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Mes del año&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Temperatura&quot;</span>) <span class="sc">+</span></span>
+<span id="cb61-19"><a href="inferencial.html#cb61-19" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb61-20"><a href="inferencial.html#cb61-20" tabindex="-1"></a>  <span class="fu">facet_grid</span>(.<span class="sc">~</span><span class="st">&quot;Distribución de temperatura por meses del año&quot;</span>)</span>
+<span id="cb61-21"><a href="inferencial.html#cb61-21" tabindex="-1"></a></span>
+<span id="cb61-22"><a href="inferencial.html#cb61-22" tabindex="-1"></a>g1</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p>Hagamos Kruskal-Wallis entre temperatura y meses</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="inferencial.html#cb62-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(temp <span class="sc">~</span> month, <span class="at">data =</span> df)</span></code></pre></div>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  temp by month
+## Kruskal-Wallis chi-squared = 208.69, df = 11, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="inferencial.html#cb64-1" tabindex="-1"></a><span class="fu">pairwise.wilcox.test</span>(df<span class="sc">$</span>temp, df<span class="sc">$</span>month, <span class="at">p.adjust.method =</span> <span class="st">&quot;bonferroni&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties
+## Warning in wilcox.test.default(xi, xj, paired = paired, ...): cannot compute
+## exact p-value with ties</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using Wilcoxon rank sum test with continuity correction 
+## 
+## data:  df$temp and df$month 
+## 
+##     jan     feb     mar     apr     may     jun     jul     aug     sep    
+## feb 1.00000 -       -       -       -       -       -       -       -      
+## mar 1.00000 0.09200 -       -       -       -       -       -       -      
+## apr 1.00000 1.00000 1.00000 -       -       -       -       -       -      
+## may 1.00000 1.00000 1.00000 1.00000 -       -       -       -       -      
+## jun 1.00000 0.00018 0.00010 0.05452 1.00000 -       -       -       -      
+## jul 1.00000 7.9e-07 2.0e-09 0.00543 1.00000 1.00000 -       -       -      
+## aug 1.00000 1.9e-10 &lt; 2e-16 0.00046 1.00000 1.00000 1.00000 -       -      
+## sep 1.00000 8.1e-10 &lt; 2e-16 0.00181 1.00000 1.00000 0.22226 0.00173 -      
+## oct 0.97059 0.00071 0.00695 0.30379 1.00000 1.00000 0.05236 0.00417 0.59480
+## nov 1.00000 1.00000 1.00000 1.00000 1.00000 1.00000 1.00000 1.00000 1.00000
+## dec 1.00000 0.08335 0.00012 0.02450 1.00000 0.00263 0.00040 2.9e-05 2.9e-05
+##     oct     nov    
+## feb -       -      
+## mar -       -      
+## apr -       -      
+## may -       -      
+## jun -       -      
+## jul -       -      
+## aug -       -      
+## sep -       -      
+## oct -       -      
+## nov 1.00000 -      
+## dec 0.00405 1.00000
+## 
+## P value adjustment method: bonferroni</code></pre>
+<p>La prueba entre la temperatura y los meses del año muestra un resultado significativo, lo que indica que existen diferencias en la distribución de la temperatura a lo largo de los meses. El análisis post hoc muestra que hay diferencias especialmente entre los meses de verano y los de invierno. Esto nos dice que podría haber un patrón estacional que afecta el área de incendios.</p>
+</div>
+<div id="conclusión-inferencial" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Conclusión inferencial<a href="#conclusi%C3%B3n-inferencial" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>En conclusión, la correlación entre el área quemada y la temperatura resultó positiva pero débil, lo que indica que, aunque a mayores temperaturas puede aumentar el área afectada, existen otros factores que influyen en la extensión del incendio. Además, parece haber una relación entre la temperatura y los meses del año, sin embargo, no podemos concluir relaciones concretas ya que no hay ninguna con una significancia lo suficientemente alta. Finalmente, el diagrama de caja y bigotes entre el área quemada y los meses del año muestra que la mayor variabilidad y magnitud de áreas quemadas se concentra en ciertos meses específicos, reflejando una posible influencia estacional en la ocurrencia y severidad de los incendios forestales.</p>
+
+
+
+
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="análisis-exploratorio-de-datos-eda.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/02-literature.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+</body>
+
+</html>
