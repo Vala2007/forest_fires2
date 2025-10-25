@@ -1,0 +1,795 @@
+# Análisis Exploratorio de Datos (EDA)
+
+
+
+```{r include=FALSE}
+library(readxl)
+library(Amelia)
+library(tidyverse)
+library(GGally)
+library(patchwork)
+library(dplyr)
+```
+
+## Datos
+
+```{r}
+datos<- read_excel("C:/Users/ASUS/Downloads/forestfires_1_.xlsx")
+```
+
+```{r}
+dim(datos)
+colnames(datos)
+str(datos)
+```
+
+```{r}
+# Valores nulos
+datos %>%
+  summarise(across(everything(), 
+                   ~sum(is.na(.))))
+```
+
+```{r}
+missmap(datos)
+```
+
+No hay datos faltantes
+
+```{r}
+# Crear data frame
+df <- as.data.frame(datos)
+```
+
+## Análisis de la variable target (área)
+
+La variable target, `area`, fue analizada a partir de 517 observaciones.
+
+```{r}
+df %>%
+  summarise(n=length(area), 
+            prom = mean(area),
+            ds = sd(area),
+            mediana = median(area),
+            RIC = IQR(area),
+            minimo = min(area),
+            maximo = max(area),
+            Q1 = quantile(area, 0.25),
+            Q3 = quantile(area, 0.75))
+
+df %>%
+  ggplot(aes(x=area)) + 
+  geom_histogram(aes(y=after_stat(density))) + 
+  geom_density(color="blue") + 
+  theme_bw()
+```
+La variable area fue analizada a partir de 517 observaciones. Se obtuvo un promedio de área quemada de aproximadamente 12.85 hectáreas (DS = 63.66 hectáreas), donde el 50% de los incendios presentaron un área quemada inferior a 0.52 hectáreas. El mínimo registrado fue de 0.00 hectáreas, lo que podría indicar que en algunos casos no hubo quema, o se trata de datos nulos o errores en la medición. El máximo alcanzó las 1,090.84 hectáreas, lo que refleja una gran heterogeneidad en la magnitud de los incendios, con algunos casos extremos de áreas quemadas significativamente mayores a la media. Este comportamiento podría indicar que aunque la mayoría de los incendios tienen un área pequeña, existen eventos excepcionales que influyen considerablemente en la distribución de los datos
+```{r}
+df %>%
+  ggplot(aes(x = "", y = area)) +
+  geom_boxplot(fill = "#a6cee3", color = "#1f78b4", outlier.color = "red") +
+  stat_summary(
+    fun = mean,
+    geom = "point",
+    shape = 20,
+    size = 3,
+    color = "black"
+  ) +
+  labs(
+    title = "Diagrama de cajas y bigotes de área quemada",
+    x = "",
+    y = "Área quemada"
+  ) +
+  theme_bw()
+```
+
+El diagrama de cajas y bigotes de la variable area revela que la mayoría de los incendios tienen áreas quemadas pequeñas, ya que la caja se concentra cerca de 0 hectáreas. La mediana se encuentra cerca de 0.57 hectáreas, lo que sugiere que la mitad de los incendios tienen áreas menores o iguales a este valor. Sin embargo, se observan varios valores atípicos representados por puntos rojos, que corresponden a incendios de gran magnitud, con áreas quemadas que alcanzan hasta 900 hectáreas o más. Esto indica una gran variabilidad en el tamaño de los incendios, con la mayoría de los casos siendo pequeños pero algunos eventos extremos que influyen en la distribución de los datos.
+
+
+## Variables independientes numéricas
+
+```{r}
+ggplot(df, aes(x = X, y = Y, size = area)) +
+  geom_point(alpha = 0.5, color = "orange") +
+  scale_x_continuous(breaks = 1:9) +
+  scale_y_continuous(breaks = 1:9) +
+  theme_bw() +
+  labs(title = "Ubicación y magnitud de incendios")
+
+```
+
+El gráfico de la frecuencia de incendios por coordenada muestra que los incendios están distribuidos en todo el bosque, aunque la mayoría afectan áreas pequeñas, lo que coincide con el fuerte sesgo observado en los datos. Se identifican algunos puntos con incendios de gran magnitud, concentrados principalmente entre las coordenadas X = 6–8 y Y = 4–6, lo que puede indicar zonas más propensas a daños. Sin embargo, no se evidencia una relación clara entre la ubicación (X, Y) y el tamaño del incendio, sino posibles regiones críticas donde los incendios tienden a ser más intensos o frecuentes.
+
+```{r}
+df %>% 
+  summarise(
+    n = length(FFMC),
+    media = mean(FFMC),
+    ds = sd(FFMC),
+    mediana = median(FFMC),
+    minimo = min(FFMC),
+    maximo = max(FFMC),
+    Q1 = quantile(FFMC, 0.25),
+    Q3 = quantile(FFMC, 0.75),
+    IQR = IQR(FFMC)) %>%
+  mutate(variable = "FFMC") -> ffmc
+
+df %>% 
+  summarise(
+    n = length(DMC),
+    media = mean(DMC),
+    ds = sd(DMC),
+    mediana = median(DMC),
+    minimo = min(DMC),
+    maximo = max(DMC),
+    Q1 = quantile(DMC, 0.25),
+    Q3 = quantile(DMC, 0.75),
+    IQR = IQR(DMC)) %>% 
+  mutate(variable = "DMC") -> dmc
+
+df %>% 
+  summarise(
+    n = length(DC),
+    media = mean(DC),
+    ds = sd(DC),
+    mediana = median(DC),
+    minimo = min(DC),
+    maximo = max(DC),
+    Q1 = quantile(DC, 0.25),
+    Q3 = quantile(DC, 0.75),
+    IQR = IQR(DC)) %>% 
+  mutate(variable = "DC")-> dc
+
+df %>% 
+  summarise(
+    n = length(ISI),
+    media = mean(ISI),
+    ds = sd(ISI),
+    mediana = median(ISI),
+    minimo = min(ISI),
+    maximo = max(ISI),
+    Q1 = quantile(ISI, 0.25),
+    Q3 = quantile(ISI, 0.75),
+    IQR = IQR(ISI)) %>% 
+  mutate(variable = "ISI")-> isi
+
+df %>% 
+  summarise(
+    n = length(temp),
+    media = mean(temp),
+    ds = sd(temp),
+    mediana = median(temp),
+    minimo = min(temp),
+    maximo = max(temp),
+    Q1 = quantile(temp, 0.25),
+    Q3 = quantile(temp, 0.75),
+    IQR = IQR(temp)) %>% 
+  mutate(variable = "temp")-> temp
+
+df %>% 
+  summarise(
+    n = length(RH),
+    media = mean(RH),
+    ds = sd(RH),
+    mediana = median(RH),
+    minimo = min(RH),
+    maximo = max(RH),
+    Q1 = quantile(RH, 0.25),
+    Q3 = quantile(RH, 0.75),
+    IQR = IQR(RH)) %>% 
+  mutate(variable = "RH")-> rh
+
+df %>% 
+  summarise(
+    n = length(wind),
+    media = mean(wind),
+    ds = sd(wind),
+    mediana = median(wind),
+    minimo = min(wind),
+    maximo = max(wind),
+    Q1 = quantile(wind, 0.25),
+    Q3 = quantile(wind, 0.75),
+    IQR = IQR(wind)) %>% 
+  mutate(variable = "wind")-> wind
+
+df %>% 
+  summarise(
+    n = length(rain),
+    media = mean(rain),
+    ds = sd(rain),
+    mediana = median(rain),
+    minimo = min(rain),
+    maximo = max(rain),
+    Q1 = quantile(rain, 0.25),
+    Q3 = quantile(rain, 0.75),
+    IQR = IQR(rain)) %>% 
+  mutate(variable = "rain")-> rain
+```
+
+```{r}
+bind_rows(ffmc, dmc, dc, isi, temp, rh, wind, rain) %>%
+  select(variable, everything())
+```
+FFMC: La media de FFMC es 90.64 (DS = 5.52), con una mediana de 91.6 y un rango entre 18.7 y 96.2. La mayoría de los valores se concentran en el rango medio, pero se observan algunas variaciones extremas, lo que sugiere que el índice de riesgo de fuego en la mayoría de los casos es moderado, con algunos eventos de mayor intensidad.
+
+DMC: La media de DMC es 110.87 (DS = 64.04), con una mediana de 108.3 y un rango entre 1.1 y 291.3. El índice presenta una gran dispersión, lo que indica que los incendios pueden estar asociados con una amplia variedad de condiciones meteorológicas y de vegetación.
+
+DC: Con una media de 547.94 (DS = 488.07), DC tiene una mediana de 664.2 y un rango que varía entre 7.9 y 860.6. Este índice también muestra una amplia dispersión, sugiriendo que los incendios pueden estar relacionados con condiciones muy variables de humedad y combustibilidad de la vegetación.
+
+ISI: La media de ISI es 9.02 (DS = 4.56), con una mediana de 8.4 y un rango entre 0.0 y 56.1. Este índice de severidad de incendios muestra una mayor concentración en los valores bajos, con algunas observaciones extremas que podrían reflejar condiciones extremadamente severas de riesgo de incendio.
+
+temp: La media de temperatura es 18.89°C (DS = 5.81), con una mediana de 19.3°C y un rango entre 2.3°C y 33.5°C. La temperatura muestra una distribución relativamente uniforme, pero con algunos valores extremos, lo que puede influir en la propagación de los incendios.
+
+RH: La media de humedad relativa es 42.0% (DS = 16.32), con una mediana de 42.0% y un rango de 15.0% a 100%. Los valores extremos en la humedad relativa pueden indicar que ciertos incendios ocurren en condiciones de muy baja humedad o, en algunos casos, de alta humedad, lo que puede afectar la velocidad de propagación del fuego.
+
+wind: La media de la velocidad del viento es 4.01 km/h (DS = 1.79), con una mediana de 4.0 km/h y un rango de 0.4 a 9.4 km/h. La mayoría de las observaciones son valores moderados de viento, aunque los valores extremos más altos podrían representar condiciones favorables para la propagación rápida de los incendios.
+
+rain: La media de lluvia es muy baja, 0.02 mm/m² (DS = 0.30), con una mediana de 0.0 mm/m² y un rango entre 0.0 y 6.4 mm/m². La lluvia tiene una concentración en valores muy bajos, lo que indica que la lluvia tiene poca influencia en la extinción de incendios, siendo la variable menos relevante en la mitigación de incendios.
+
+```{r}
+box_plot_var <- function(data, var, titulo, ylab) {
+  ggplot(data, aes(x = "", y = !!sym(var))) +
+    geom_boxplot(fill = "#a6cee3", color = "#1f78b4", outlier.color = "red") +
+    stat_summary(fun = mean, geom = "point", shape = 20, size = 3, color = "black") +
+    labs(title = titulo, x = "", y = ylab) +
+    theme_bw()
+}
+
+# Crear cada gráfico
+p1 <- box_plot_var(df, "FFMC", "FFMC", "Índice FFMC")
+p2 <- box_plot_var(df, "DMC",  "DMC",  "Índice DMC")
+p3 <- box_plot_var(df, "DC",   "DC",   "Índice DC")
+p4 <- box_plot_var(df, "ISI",  "ISI",  "ISI")
+p5 <- box_plot_var(df, "temp", "temp", "Temperatura")
+p6 <- box_plot_var(df, "RH",   "RH",   "RH")
+p7 <- box_plot_var(df, "wind", "wind", "Viento")
+p8 <- box_plot_var(df, "rain", "rain", "Lluvia")
+p9 <- box_plot_var(df, "X", "X", "Coord. X")
+p10 <- box_plot_var(df, "Y", "Y", "Coord. Y")
+
+# Juntar todo en una sola imagen 
+(p1 | p2 | p3 | p4 | p9) /
+(p5 | p6 | p7 | p8 | p10)
+
+```
+Los gráficos de cajas y bigotes muestran que la mayoría de los incendios forestales en la región ocurren bajo condiciones moderadas, con índices de riesgo de incendio (FFMC, DMC, DC, ISI) concentrados en valores medios, pero con algunos valores atípicos que indican eventos extremos. La temperatura presenta una distribución relativamente uniforme, aunque con algunas temperaturas altas que pueden favorecer la propagación del fuego, mientras que la humedad relativa varía entre valores bajos y altos, lo que puede influir en la intensidad del incendio. El viento tiene una distribución centrada en valores bajos, pero algunos picos extremos sugieren que en ciertos casos el viento puede acelerar la propagación. Finalmente, la lluvia es muy poco frecuente y no parece tener un impacto significativo en la extinción de incendios. Estos patrones reflejan que, aunque las condiciones en la mayoría de los casos son moderadas, los eventos extremos pueden generar situaciones de alto riesgo para los incendios.
+
+## Variables independientes categóricas
+
+```{r}
+df$month <- factor(df$month,
+                   levels = c("jan", "feb", "mar", "apr", "may", "jun",
+                              "jul", "aug", "sep", "oct", "nov", "dec"))
+
+tabla_month <- df %>%
+  count(month, name="Frecuencia") %>%
+  mutate(
+    Porcentaje = round(
+      (Frecuencia/sum(Frecuencia))*100,1),
+    Etiqueta = paste0(Frecuencia, " (",Porcentaje,"%)"))
+```
+
+```{r}
+g_mes <- ggplot(tabla_month, aes(x = month, y = Frecuencia)) +
+  geom_col(fill = "#A0ABFF", width = 0.6) +
+  geom_text(aes(label = Etiqueta), vjust = -0.5, size = 3) +
+  facet_wrap(~ "Distribución de la variable month") + 
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(x = "Mes del año", y = "Frecuencia (Porcentaje)") +
+  theme_bw(base_size = 8) +
+  theme(
+    plot.title = element_blank(),
+    strip.background = element_rect(fill = "gray80", color = NA),
+    strip.text = element_text(face = "bold"),
+    panel.grid.major.x = element_blank()
+  )
+```
+
+```{r}
+df$day <- factor(df$day,
+                 levels = c("mon", "tue", "wed", "thu", "fri", "sat", "sun"))
+
+tabla_day <- df %>%
+  count(day, name="Frecuencia") %>%
+  mutate(
+    Porcentaje = round(
+      (Frecuencia/sum(Frecuencia))*100,1),
+    Etiqueta = paste0(Frecuencia, " (",Porcentaje,"%)"))
+```
+
+```{r}
+g_dia <- ggplot(tabla_day, aes(x = day, y = Frecuencia)) +
+  geom_col(fill = "#A0ABFF", width = 0.6) +
+  geom_text(aes(label = Etiqueta), vjust = -0.5, size = 3) +
+  facet_wrap(~ "Distribución de la variable day") + 
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(x = "Día de la semana", y = "Frecuencia (Porcentaje)") +
+  theme_bw(base_size = 8) +
+  theme(
+    plot.title = element_blank(),
+    strip.background = element_rect(fill = "gray80", color = NA),
+    strip.text = element_text(face = "bold"),
+    panel.grid.major.x = element_blank()
+  )
+```
+
+```{r}
+g_mes / g_dia
+```
+Ambos gráficos dan información valiosa, pero el de la variable month es más relevante para el estudio, ya que muestra una clara estacionalidad en los incendios, con un aumento significativo en los meses agosto y septiembre, lo cual es crucial para predecir y gestionar los incendios en función de las condiciones climáticas estacionales. El gráfico de la variable day, aunque útil, refleja una distribución menos clara y podría ser más relevante si se exploran factores específicos como el comportamiento humano o actividades más comunes en ciertos días.
+
+## Análisis bivariado num vs num
+
+```{r}
+df %>% 
+  ggplot(aes(x = FFMC, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "FFMC",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre FFMC y área quemada")
+```
+El gráfico de dispersión muestra una relación positiva entre el FFMC (Índice de riesgo de incendio) y el área quemada. A medida que el valor de FFMC aumenta, también lo hace el área quemada, lo que indica que a mayores valores de FFMC, que representan un mayor riesgo de incendio, se asocia con un aumento en el tamaño del área quemada. Sin embargo, la relación no es perfecta, ya que existen muchos valores dispersos, especialmente en los valores más altos de FFMC, lo que sugiere que otros factores también influyen en el tamaño del área afectada por el fuego. La línea de regresión roja muestra esta tendencia ascendente, confirmando una correlación moderada entre ambas variables, pero con una gran variabilidad en los datos.
+
+```{r}
+df %>% 
+  ggplot(aes(x = DMC, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "DMC",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre DMC y área quemada")
+```
+Los gráficos de dispersión entre FFMC y el área quemada, así como entre DMC y el área quemada, muestran una relación positiva entre ambas variables. A medida que el valor de FFMC y DMC aumentan, también lo hace el área quemada, lo que indica que un mayor riesgo de incendio, reflejado en mayores valores de estos índices, está asociado con un aumento en el tamaño del área afectada por el fuego. Sin embargo, ambos gráficos muestran una dispersión considerable, especialmente en los valores bajos de ambos índices, lo que sugiere que, aunque estos factores son importantes, otros como la temperatura, el viento o la humedad también influyen en la extensión del área quemada. La línea de regresión en ambos gráficos confirma la tendencia ascendente, pero la variabilidad en los datos indica que estos factores por sí solos no explican completamente el tamaño de los incendios
+
+```{r}
+df %>% 
+  ggplot(aes(x = DC, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "DMC",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre DC y área quemada")
+```
+El gráfico de dispersión muestra una relación positiva entre el DC y el área quemada. A medida que el valor de DC aumenta, también lo hace el área quemada, lo que sugiere que cuando la vegetación se encuentra en un estado más seco (mayores valores de DC), hay una mayor probabilidad de que los incendios afecten áreas más grandes. La línea de regresión roja muestra una relación ascendente, indicando que el índice DC tiene una correlación moderada con el tamaño del área quemada. Sin embargo, como en los otros gráficos, existe una gran dispersión en los datos, especialmente en los valores bajos de DC, donde el área quemada es principalmente pequeña o nula. Esto sugiere que, aunque DC es un factor importante, otros factores como la temperatura, el viento o la humedad también juegan un papel crucial en la propagación de los incendios.
+
+```{r}
+df %>% 
+  ggplot(aes(x = ISI, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "ISI",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre ISI y área quemada")
+```
+El gráfico de dispersión muestra que no existe una relación clara entre el ISI y el área quemada. A pesar de que el ISI refleja un mayor riesgo de incendio, la dispersión de los puntos es amplia y no muestra una tendencia clara, como sí ocurre en otros gráficos. La línea de regresión roja casi horizontal sugiere que, a pesar de los valores más altos del índice, no se observa un aumento significativo en el área quemada. Esto indica que el ISI no está siendo un predictor fuerte del tamaño del área quemada, y otros factores, como la humedad, el viento o la vegetación, podrían estar jugando un papel más importante en la extensión de los incendios.
+
+```{r}
+df %>% 
+  ggplot(aes(x = temp, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Temperatura",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre temperatura y área quemada")
+```
+El gráfico de dispersión muestra una relación positiva débil entre Temperatura y el área quemada. A medida que la temperatura aumenta, también lo hace el área quemada, lo que indica que a temperaturas más altas, es más probable que los incendios afecten áreas mayores. Sin embargo, la dispersión de los puntos es considerable, lo que sugiere que la temperatura no es el único factor que influye en la magnitud de los incendios. La línea de regresión roja confirma la tendencia ascendente, pero la dispersión muestra que otros factores, como la humedad, el viento o el tipo de vegetación, también juegan un papel importante en la extensión de los incendios. En resumen, aunque la temperatura parece tener un efecto en el área quemada, su influencia es moderada comparada con otros factores.
+
+```{r}
+df %>% 
+  ggplot(aes(x = RH, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Humedad relativa",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre RH y área quemada")
+```
+El gráfico de dispersión muestra una relación negativa muy débil entre Humedad Relativa (RH) y el área quemada. A medida que la humedad relativa aumenta, el área quemada tiende a disminuir ligeramente, lo que sugiere que a mayores niveles de humedad, los incendios tienden a ser más pequeños o menos frecuentes. Sin embargo, la dispersión de los puntos es considerable y la línea de regresión roja casi horizontal confirma que no existe una correlación fuerte entre estas dos variables. Esto indica que, aunque la humedad relativa podría tener algún impacto en la propagación de los incendios, otros factores como la temperatura, el viento o el tipo de vegetación parecen influir de manera más significativa en la extensión del área quemada.
+
+```{r}
+df %>% 
+  ggplot(aes(x = rain, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Lluvia",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre lluvia y área quemada")
+```
+El gráfico de dispersión muestra una relación positiva muy débil entre Lluvia y el área quemada. La mayoría de los puntos se concentran cerca de 0 mm de lluvia, lo que indica que en la mayoría de los incendios no hubo precipitaciones significativas. A medida que la cantidad de lluvia aumenta, también lo hace el área quemada, pero esta relación es débil y con pocos puntos de datos, lo que sugiere que la lluvia no es un factor determinante en la extensión de los incendios. La línea de regresión roja confirma una tendencia ascendente, pero debido a la baja frecuencia de lluvias y la dispersión de los puntos, podemos concluir que la lluvia tiene un impacto mínimo en la propagación de los incendios en esta región
+
+```{r}
+df %>% 
+  ggplot(aes(x = wind, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Viento",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre viento y área quemada")
+```
+El gráfico de dispersión muestra una relación positiva moderada entre Viento y el área quemada. A medida que la velocidad del viento aumenta, también tiende a aumentar el área quemada, lo que sugiere que el viento puede tener un impacto en la propagación de los incendios, acelerando su expansión. La línea de regresión roja confirma esta tendencia ascendente, lo que indica que el viento es un factor que, aunque no es el único determinante, parece jugar un papel en la extensión del área afectada por el fuego. Sin embargo, la dispersión de los puntos muestra que hay mucha variabilidad, por lo que no solo el viento influye en la magnitud del incendio, sino que otros factores como la temperatura, la humedad y la vegetación también deben ser considerados.
+
+```{r}
+df %>% 
+  ggplot(aes(x = X, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Coord.X",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre X y área quemada")
+```
+
+```{r}
+df %>% 
+  ggplot(aes(x = Y, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Y",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre Y y área quemada")
+```
+
+
+## Análisis bivariado num vs cat
+
+```{r}
+# Agrupación por "month"
+agrup_month <- df %>%
+  group_by(month) %>%
+  summarise(n = length(area),
+            media = mean(area),
+            ds = sd(area),
+            mediana = median(area),
+            minimo = min(area),
+            maximo = max(area),
+            Q1 = quantile(area, 0.25),
+            Q3 = quantile(area, 0.75),
+            IQR = IQR(area)) %>%
+  mutate(variable = "month", niveles = as.character(month)) %>%
+  select(variable, niveles, everything(), -month)
+g1 <- df %>% 
+  ggplot(aes(x = month, y = area)) +
+  geom_boxplot(fill = "#87CEFA", outlier.colour = "red", outlier.shape = 16) +
+  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "darkblue") +
+  labs(x = "Mes del año", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~"Distribución de área quemada por meses del año")
+```
+
+```{r}
+agrup_day <- df %>%
+  group_by(day) %>%
+  summarise(n = length(area),
+            media = mean(area),
+            ds = sd(area),
+            mediana = median(area),
+            minimo = min(area),
+            maximo = max(area),
+            Q1 = quantile(area, 0.25),
+            Q3 = quantile(area, 0.75),
+            IQR = IQR(area)) %>%
+  mutate(variable = "day", niveles = as.character(day)) %>%
+  select(variable, niveles, everything(), -day)
+g2 <- df %>% 
+  ggplot(aes(x = day, y = area)) +
+  geom_boxplot(fill = "#87CEFA", outlier.colour = "red", outlier.shape = 16) +
+  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "darkblue") +
+  labs(x = "Días de la semana", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~"Distribución de área quemada por día de la semana")
+```
+
+```{r}
+# Unión de las dos tablas
+bind_rows(agrup_month, agrup_day)
+g1 / g2
+```
+La distribución de área quemada por meses del año muestra una clara concentración de incendios durante los meses de junio, julio y agosto, que coinciden con el verano, cuando las condiciones climáticas favorecen la propagación del fuego. Aunque la distribución por días de la semana también es interesante, ya que muestra una mayor actividad los viernes y domingo, la estacionalidad en los meses del año tiene un impacto más directo y significativo en la extensión de los incendios, lo que es crucial para predecir y gestionar los incendios forestales en función de las condiciones climáticas.
+
+## Conclusiones EDA
+
+El área quemada sigue un patrón de pocos incendios grandes entre muchísimos pequeños, donde aproximadamente más del 75% de los registros tienen un área quemada menor a 5 hectáreas, influenciado por clima, índices de combustible y época del año, el análisis del área quemada en los incendios forestales en el bosque Montesinho revela un comportamiento altamente sesgado y con distribución desigual. 
+Inicialmente se evidencia una relación con las variables del índice FFMC, con valores más acumulados hacia la derecha, y la época del año, siendo agosto y septiembre, por mucho, los meses con más frecuencia de incendios forestales.
+
+
+
+# Inferencial
+
+## Correlación y Kruskal-Wallis
+
+Hagamos prueba de Kolmogorov_Smirnov a las variables numéricas para probar si siguen una distribución normal
+
+```{r}
+vars <- c("area", "X", "Y", "FFMC", "DMC", "DC", "ISI", "temp", "RH", "wind", "rain")
+
+ks_results <- lapply(vars, function(v) {
+  test <- ks.test(scale(df[[v]]), pnorm)
+  data.frame(
+    Variable = v,
+    D = round(test$statistic, 5),
+    p_value = format.pval(test$p.value, digits = 3, eps = .001),
+    Normalidad = ifelse(test$p.value > 0.05, "No se rechaza normalidad", "Se rechaza normalidad")
+  )
+})
+
+ks_summary <- do.call(rbind, ks_results)
+
+knitr::kable(ks_summary, caption = "Resumen del test de Kolmogorov–Smirnov para variables numéricas")
+
+```
+
+Ninguna de las variables numéricas independientes es normal, exceptuando temperatura.
+No podemos aplicar Pearson, ya que no cumplen con el supuesto de normalidad, por lo tanto, aplicamos una prueba no paramétrica de correlación, Spearman.
+
+```{r}
+vars <- c("X", "Y", "FFMC", "DMC", "DC", "ISI", "temp","RH", "wind", "rain")
+
+tabla_cor <- map_dfr(vars, function(v) {
+  test <- cor.test(df$area, df[[v]], method = "spearman")
+  tibble(
+    variable = v,
+    rho = test$estimate,
+    p_value = test$p.value
+  )
+})
+tabla_cor %>%
+  arrange(p_value)
+```
+
+Los resultados del análisis de correlación de Spearman entre el área quemada y las variables independientes muestran coeficientes de correlación bajos en todos los casos, indicando relaciones débiles. Además, los p valor son mayores a 0.05 en todas las variables, lo que significa que ninguna correlación es estadísticamente significativa al 5%. La temperatura (rho = 0.0787, p = 0.0738) tiene el coeficiente más alto y el p valor más cercano a 0.05, pero sigue siendo débil. Esto sugiere que el área afectada por incendios no depende de manera directa o fuerte de ninguna de las variables analizadas.
+
+```{r eval=FALSE, include=FALSE}
+x <- df$area
+y <- df$temp
+n <- length(x)
+
+cor.test(x,y, method = 'pearson')
+```
+
+
+Recordemos las gráficas de correlación 
+
+```{r echo=FALSE}
+g1 <- df %>% 
+  ggplot(aes(x = FFMC, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "FFMC", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~ "Dispersión entre FFMC y área quemada")
+
+g2 <- df %>% 
+  ggplot(aes(x = DMC, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "DMC", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~ "Dispersión entre DMC y área quemada")
+
+g3 <- df %>% 
+  ggplot(aes(x = DC, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "DC", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~ "Dispersión entre DC y área quemada")
+
+g4 <- df %>% 
+  ggplot(aes(x = ISI, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "ISI", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~ "Dispersión entre ISI y área quemada")
+
+g5 <- df %>% 
+  ggplot(aes(x = temp, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Temperatura", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~ "Dispersión entre temperatura y área quemada")
+
+g6 <- df %>% 
+  ggplot(aes(x = RH, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Humedad relativa", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~ "Dispersión entre RH y área quemada")
+
+g7 <- df %>% 
+  ggplot(aes(x = rain, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Lluvia", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~ "Dispersión entre lluvia y área quemada")
+
+g8 <- df %>% 
+  ggplot(aes(x = wind, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Viento", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~ "Dispersión entre viento y área quemada")
+
+g9 <- df %>% 
+  ggplot(aes(x = X, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Coord. X", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~ "Dispersión entre X y área quemada")
+
+g10 <- df %>% 
+  ggplot(aes(x = Y, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Coord. Y", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~ "Dispersión entre Y y área quemada")
+
+g1
+g2
+g3
+g4
+g5
+g6
+g7
+g8
+g9
+g10
+```
+
+
+Aplicamos test no paramétrico de Kruskal-Wallis, para comparar área (numérica) con mes y día (categóricas)
+
+```{r}
+kruskal.test(area ~ month, data = df)
+```
+
+```{r}
+kruskal.test(area ~ day, data = df)
+```
+
+```{r}
+pairwise.wilcox.test(x = datos$area,
+                     g = datos$month,
+                     exact = FALSE,
+                     p.adjust.method = "bonferroni")
+```
+
+La prueba no paramétrica de Kruskal-Wallis se aplicó para evaluar si existían diferencias significativas en el área quemada entre los distintos meses y días. En el caso de los meses, sí existen diferencias estadísticamente significativas (p = 0.01396), lo que puede indicar que el área afectada por incendios varía según el mes del año. En cambio, para los días de la semana (p = 0.977), no se encontraron diferencias significativas. El análisis post-hoc con la prueba de Wilcoxon reveló que las diferencias más notorias se dan entre meses como diciembre y agosto, diciembre y julio, entre otros, lo que sugiere una posible influencia estacional (verano) sobre los incendios
+
+
+Al encontrar esas posibles relaciones que llaman la atención, analizamos temperatura con meses
+
+```{r}
+# Agrupación por "month"
+agrup_month <- df %>%
+  group_by(month) %>%
+  summarise(n = length(area),
+            media = mean(area),
+            ds = sd(area),
+            mediana = median(area),
+            minimo = min(area),
+            maximo = max(area),
+            Q1 = quantile(area, 0.25),
+            Q3 = quantile(area, 0.75),
+            IQR = IQR(area)) %>%
+  mutate(variable = "month", niveles = as.character(month)) %>%
+  select(variable, niveles, everything(), -month)
+g1 <- df %>% 
+  ggplot(aes(x = month, y = area)) +
+  geom_boxplot(fill = "#87CEFA", outlier.colour = "red", outlier.shape = 16) +
+  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "darkblue") +
+  labs(x = "Mes del año", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~"Distribución de área quemada por meses del año")
+```
+
+```{r}
+agrup_day <- df %>%
+  group_by(day) %>%
+  summarise(n = length(area),
+            media = mean(area),
+            ds = sd(area),
+            mediana = median(area),
+            minimo = min(area),
+            maximo = max(area),
+            Q1 = quantile(area, 0.25),
+            Q3 = quantile(area, 0.75),
+            IQR = IQR(area)) %>%
+  mutate(variable = "day", niveles = as.character(day)) %>%
+  select(variable, niveles, everything(), -day)
+g2 <- df %>% 
+  ggplot(aes(x = day, y = area)) +
+  geom_boxplot(fill = "#87CEFA", outlier.colour = "red", outlier.shape = 16) +
+  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "darkblue") +
+  labs(x = "Días de la semana", y = "Área quemada") +
+  theme_bw() +
+  facet_grid(.~"Distribución de área quemada por día de la semana")
+```
+
+```{r}
+
+g1 / g2
+```
+
+```{r}
+df %>% 
+  ggplot(aes(x = temp, y = area)) +
+  geom_point(alpha = 0.4, color = "#1E90FF") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(x = "Temperatura",
+       y = "Área quemada"
+  ) +
+  theme_bw()+
+  facet_grid(.~ "Dispersión entre temp y área quemada")
+```
+
+```{r}
+agrup_month <- df %>%
+  group_by(month) %>%
+  summarise(n = length(temp),
+            media = mean(temp),
+            ds = sd(temp),
+            mediana = median(temp),
+            minimo = min(temp),
+            maximo = max(temp),
+            Q1 = quantile(temp, 0.25),
+            Q3 = quantile(temp, 0.75),
+            IQR = IQR(temp)) %>%
+  mutate(variable = "month", niveles = as.character(month)) %>%
+  select(variable, niveles, everything(), -month)
+g1 <- df %>% 
+  ggplot(aes(x = month, y = temp)) +
+  geom_boxplot(fill = "#87CEFA", outlier.colour = "red", outlier.shape = 16) +
+  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "darkblue") +
+  labs(x = "Mes del año", y = "Temperatura") +
+  theme_bw() +
+  facet_grid(.~"Distribución de temperatura por meses del año")
+
+g1
+```
+
+
+Hagamos Kruskal-Wallis entre temperatura y meses
+```{r}
+kruskal.test(temp ~ month, data = df)
+```
+
+
+```{r}
+pairwise.wilcox.test(df$temp, df$month, p.adjust.method = "bonferroni")
+```
+
+La prueba entre la temperatura y los meses del año muestra un resultado significativo, lo que indica que existen diferencias en la distribución de la temperatura a lo largo de los  meses. El análisis post hoc muestra que hay diferencias especialmente entre los meses de verano y los de invierno. Esto nos dice que podría haber un patrón estacional que afecta el área de incendios. 
+
+
+## Conclusión inferencial
+
+En conclusión, la correlación entre el área quemada y la temperatura resultó positiva pero débil, lo que indica que, aunque a mayores temperaturas puede aumentar el área afectada, existen otros factores que influyen en la extensión del incendio. Además, parece haber una relación entre la temperatura y los meses del año, sin embargo, no podemos concluir relaciones concretas ya que no hay ninguna con una significancia lo suficientemente alta. Finalmente, el diagrama de caja y bigotes entre el área quemada y los meses del año muestra que la mayor variabilidad y magnitud de áreas quemadas se concentra en ciertos meses específicos, reflejando una posible influencia estacional en la ocurrencia y severidad de los incendios forestales.
+
+
+
